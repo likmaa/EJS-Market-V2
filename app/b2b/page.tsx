@@ -2,6 +2,13 @@
 
 import { Card, CardContent } from '@/components/ui/Card';
 import Link from 'next/link';
+import {
+  CartIcon,
+  BoxIcon,
+  RevenueIcon,
+  HourglassIcon,
+  TrendIcon,
+} from '@/components/admin/AdminIcons';
 
 // Données mockées - à remplacer par des appels API
 const stats = {
@@ -74,8 +81,8 @@ export default function B2BDashboard() {
                   {stats.totalOrders}
                 </p>
               </div>
-              <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
-                <span className="text-2xl">🛒</span>
+              <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-700">
+                <CartIcon className="w-7 h-7" />
               </div>
             </div>
           </CardContent>
@@ -93,8 +100,8 @@ export default function B2BDashboard() {
                   })}
                 </p>
               </div>
-              <div className="h-12 w-12 rounded-full bg-green-100 flex items-center justify-center">
-                <span className="text-2xl">💰</span>
+              <div className="h-12 w-12 rounded-full bg-green-100 flex items-center justify-center text-green-700">
+                <RevenueIcon className="w-7 h-7" />
               </div>
             </div>
             <p className="text-xs text-gray-500 mt-2">
@@ -112,8 +119,8 @@ export default function B2BDashboard() {
                   {stats.pendingOrders}
                 </p>
               </div>
-              <div className="h-12 w-12 rounded-full bg-orange-100 flex items-center justify-center">
-                <span className="text-2xl">⏳</span>
+              <div className="h-12 w-12 rounded-full bg-orange-100 flex items-center justify-center text-orange-700">
+                <HourglassIcon className="w-7 h-7" />
               </div>
             </div>
           </CardContent>
@@ -128,8 +135,8 @@ export default function B2BDashboard() {
                   {stats.favoriteProducts}
                 </p>
               </div>
-              <div className="h-12 w-12 rounded-full bg-purple-100 flex items-center justify-center">
-                <span className="text-2xl">⭐</span>
+              <div className="h-12 w-12 rounded-full bg-purple-100 flex items-center justify-center text-purple-700">
+                <TrendIcon className="w-7 h-7" />
               </div>
             </div>
           </CardContent>
@@ -148,21 +155,21 @@ export default function B2BDashboard() {
                 href="/b2b/catalog"
                 className="flex items-center gap-3 p-3 rounded-lg bg-violet-electric text-white hover:bg-violet-700 transition-colors"
               >
-                <span className="text-xl">📦</span>
+                <BoxIcon className="w-5 h-5" />
                 <span className="font-medium">Parcourir le catalogue</span>
               </Link>
               <Link
                 href="/b2b/orders"
                 className="flex items-center gap-3 p-3 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors"
               >
-                <span className="text-xl">🛒</span>
+                <CartIcon className="w-5 h-5" />
                 <span className="font-medium">Voir mes commandes</span>
               </Link>
               <Link
                 href="/b2b/invoices"
                 className="flex items-center gap-3 p-3 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors"
               >
-                <span className="text-xl">📄</span>
+                <BoxIcon className="w-5 h-5" />
                 <span className="font-medium">Télécharger mes factures</span>
               </Link>
             </div>
@@ -225,7 +232,7 @@ export default function B2BDashboard() {
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="flex items-start gap-3">
-              <span className="text-2xl">💰</span>
+              <RevenueIcon className="w-6 h-6 text-yellow-500" />
               <div>
                 <p className="font-medium text-gray-900">Tarifs Dégressifs</p>
                 <p className="text-sm text-gray-600">
@@ -234,7 +241,7 @@ export default function B2BDashboard() {
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <span className="text-2xl">📦</span>
+              <BoxIcon className="w-6 h-6 text-orange-500" />
               <div>
                 <p className="font-medium text-gray-900">Commandes en Gros</p>
                 <p className="text-sm text-gray-600">
@@ -243,7 +250,7 @@ export default function B2BDashboard() {
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <span className="text-2xl">💳</span>
+              <HourglassIcon className="w-6 h-6 text-green-500" />
               <div>
                 <p className="font-medium text-gray-900">Paiement Différé</p>
                 <p className="text-sm text-gray-600">
