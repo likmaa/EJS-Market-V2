@@ -33,10 +33,19 @@ export async function middleware(request: NextRequest) {
   }
 
   // Récupérer le token JWT depuis NextAuth
-  const token = await getToken({
-    req: request,
-    secret: process.env.NEXTAUTH_SECRET,
-  });
+  // Avec NextAuth v5, le cookie de session s'appelle généralement "authjs.session-token"
+  // On le précise pour que le middleware retrouve bien la session.
+  const token =
+    (await getToken({
+      req: request,
+      secret: process.env.NEXTAUTH_SECRET,
+      cookieName: 'authjs.session-token',
+    })) ||
+    (await getToken({
+      req: request,
+      secret: process.env.NEXTAUTH_SECRET,
+      cookieName: 'next-auth.session-token',
+    }));
 
   // Vérifier si c'est une route admin
   const isAdminRoute = adminRoutes.some((route) =>
