@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { getToken } from 'next-auth/jwt';
 import { UserRole } from '@prisma/client';
 import { canAccessAdmin, canAccessB2B } from '@/lib/auth';
+import { auth } from '@/lib/auth-config';
 
 // Routes protégées par rôle
 const adminRoutes = ['/admin'];
@@ -32,20 +32,8 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Récupérer le token JWT depuis NextAuth
-  // Avec NextAuth v5, le cookie de session s'appelle généralement "authjs.session-token"
-  // On le précise pour que le middleware retrouve bien la session.
-  const token =
-    (await getToken({
-      req: request,
-      secret: process.env.NEXTAUTH_SECRET,
-      cookieName: 'authjs.session-token',
-    })) ||
-    (await getToken({
-      req: request,
-      secret: process.env.NEXTAUTH_SECRET,
-      cookieName: 'next-auth.session-token',
-    }));
+  // Récupérer la session via NextAuth v5 (Auth.js)
+  const session = await auth(request as any);
 
   // Vérifier si c'est une route admin
   const isAdminRoute = adminRoutes.some((route) =>
@@ -55,8 +43,8 @@ export async function middleware(request: NextRequest) {
   // Vérifier si c'est une route B2B
   const isB2BRoute = b2bRoutes.some((route) => pathname.startsWith(route));
 
-  // Si pas de token, rediriger vers login
-  if (!token) {
+  // Si pas de session, rediriger vers login pour les routes protégées
+  if (!session) {
     if (isAdminRoute || isB2BRoute) {
       const url = request.nextUrl.clone();
       url.pathname = '/login';
@@ -66,7 +54,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const userRole = token.role as UserRole;
+  const userRole = session.user.role as UserRole;
 
   // Vérifier l'accès aux routes admin
   if (isAdminRoute && !canAccessAdmin(userRole)) {
