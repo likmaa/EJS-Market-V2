@@ -91,16 +91,36 @@ export default function BeProPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setError(null);
 
-    // Simulation d'envoi (à remplacer par un appel API réel)
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    setIsSubmitting(false);
-    setIsSubmitted(true);
+    try {
+      const response = await fetch('/api/b2b/requests', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        setError(data.error || 'Erreur lors de l’envoi de la demande. Veuillez réessayer.');
+        setIsSubmitting(false);
+        return;
+      }
+
+      setIsSubmitting(false);
+      setIsSubmitted(true);
+    } catch (err) {
+      setError("Une erreur est survenue lors de l'envoi. Veuillez réessayer.");
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -315,6 +335,11 @@ export default function BeProPage() {
               <Card className="bg-white border-gray-200 shadow-lg">
                 <CardContent className="p-8">
                   <form onSubmit={handleSubmit} className="space-y-6">
+                    {error && (
+                      <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+                        {error}
+                      </div>
+                    )}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
                         <label className="block text-sm font-semibold text-gray-700 mb-2">
