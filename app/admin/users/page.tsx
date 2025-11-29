@@ -126,6 +126,26 @@ export default function UsersPage() {
     }
   };
 
+  const makeB2B = async (id: string) => {
+    try {
+      const res = await fetch(`/api/admin/users/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ role: 'B2B_CUSTOMER' }),
+      });
+      if (!res.ok) {
+        throw new Error('Erreur lors de la mise à jour du rôle');
+      }
+      fetchUsers();
+    } catch (error) {
+      alert(
+        error instanceof Error
+          ? error.message
+          : 'Erreur lors de la mise à jour du rôle',
+      );
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -232,13 +252,21 @@ export default function UsersPage() {
                         )}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        <div className="flex gap-2">
+                        <div className="flex gap-2 items-center flex-wrap">
                           <Link
                             href={`/admin/users/${user.id}`}
                             className="text-violet-electric hover:text-violet-700"
                           >
                             Modifier
                           </Link>
+                          {user.role !== 'B2B_CUSTOMER' && (
+                            <button
+                              onClick={() => makeB2B(user.id)}
+                              className="text-blue-600 hover:text-blue-800"
+                            >
+                              Passer en B2B
+                            </button>
+                          )}
                           <button
                             onClick={() => handleDelete(user.id)}
                             className="text-red-600 hover:text-red-800"
