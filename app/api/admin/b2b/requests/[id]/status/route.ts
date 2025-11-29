@@ -9,10 +9,7 @@ const statusSchema = z.object({
   status: z.enum(['APPROVED', 'REJECTED']),
 });
 
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: { id: string } },
-) {
+export async function PATCH(request: NextRequest, { params }: any) {
   try {
     const session = await auth();
     if (!session || !canAccessAdmin(session.user.role)) {
