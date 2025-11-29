@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
+import { notifyAdminNewB2BRequest, sendB2BStatusEmail } from '@/lib/email';
 
 export const dynamic = 'force-dynamic';
 
@@ -23,7 +24,7 @@ export async function POST(request: Request) {
     const json = await request.json();
     const data = b2bRequestSchema.parse(json);
 
-    await prisma.b2b_requests.create({
+    const created = await prisma.b2b_requests.create({
       data: {
         id: crypto.randomUUID(),
         companyName: data.companyName,
@@ -38,6 +39,23 @@ export async function POST(request: Request) {
         annualVolume: data.annualVolume,
         message: data.message,
       },
+    });
+
+    // Email de confirmation au B2B (réception)
+    await sendB2BStatusEmail({
+      to: data.email,
+      companyName: data.companyName,
+      status: 'PENDING',
+    });
+
+    // Notification à l'admin (si configurée)
+    await notifyAdminNewB2BRequest({
+      companyName: created.companyName,
+      email: created.email,
+      phone: created.phone,
+      vatNumber: created.vatNumber,
+      sector: created.sector,
+      annualVolume: created.annualVolume,
     });
 
     return NextResponse.json(

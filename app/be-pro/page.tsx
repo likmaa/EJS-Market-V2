@@ -151,7 +151,8 @@ export default function BeProPage() {
               </p>
               {/* CTA principaux */}
               <div className="flex flex-wrap gap-4 mb-8">
-                <Link href="/register?type=b2b">
+                {/* Fait défiler vers la section formulaire plus bas */}
+                <Link href="#bepro-open-account">
                   <Button
                     variant="primary"
                     size="lg"
@@ -311,7 +312,7 @@ export default function BeProPage() {
       </section>
 
       {/* Registration Form */}
-      <section className="py-16 bg-white">
+      <section id="bepro-open-account" className="py-16 bg-white">
         <div className="max-w-[1600px] mx-auto px-12 lg:px-16 xl:px-20 2xl:px-24">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

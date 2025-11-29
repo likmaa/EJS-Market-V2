@@ -21,6 +21,7 @@ export default function AdminB2BRequestsPage() {
   const [requests, setRequests] = useState<B2BRequest[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [updatingId, setUpdatingId] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchRequests() {
@@ -42,6 +43,31 @@ export default function AdminB2BRequestsPage() {
 
     fetchRequests();
   }, []);
+
+  async function updateStatus(id: string, status: 'APPROVED' | 'REJECTED') {
+    try {
+      setUpdatingId(id);
+      const res = await fetch(`/api/admin/b2b/requests/${id}/status`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || 'Erreur lors de la mise à jour du statut');
+      }
+
+      setRequests((prev) =>
+        prev.map((r) => (r.id === id ? { ...r, status } : r)),
+      );
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : 'Erreur inattendue lors de la mise à jour',
+      );
+    } finally {
+      setUpdatingId(null);
+    }
+  }
 
   if (isLoading) {
     return (
@@ -104,6 +130,9 @@ export default function AdminB2BRequestsPage() {
                   <th className="px-4 py-3 text-left font-semibold text-gray-700">
                     Reçue le
                   </th>
+                  <th className="px-4 py-3 text-left font-semibold text-gray-700">
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
@@ -151,6 +180,24 @@ export default function AdminB2BRequestsPage() {
                         hour: '2-digit',
                         minute: '2-digit',
                       })}
+                    </td>
+                    <td className="px-4 py-3 whitespace-nowrap space-x-2">
+                      <button
+                        type="button"
+                        onClick={() => updateStatus(req.id, 'APPROVED')}
+                        disabled={updatingId === req.id || req.status === 'APPROVED'}
+                        className="px-3 py-1 rounded-md text-xs font-medium bg-green-100 text-green-800 hover:bg-green-200 disabled:opacity-50"
+                      >
+                        Approuver
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => updateStatus(req.id, 'REJECTED')}
+                        disabled={updatingId === req.id || req.status === 'REJECTED'}
+                        className="px-3 py-1 rounded-md text-xs font-medium bg-red-100 text-red-800 hover:bg-red-200 disabled:opacity-50"
+                      >
+                        Refuser
+                      </button>
                     </td>
                   </tr>
                 ))}
