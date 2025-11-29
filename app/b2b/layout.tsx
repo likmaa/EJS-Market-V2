@@ -4,13 +4,20 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
+import {
+  DashboardIcon,
+  ProductsIcon,
+  OrdersIcon,
+  BoxIcon,
+  ProfileIcon,
+} from '@/components/admin/AdminIcons';
 
 const navigation = [
-  { name: 'Dashboard', href: '/b2b', icon: '📊' },
-  { name: 'Catalogue', href: '/b2b/catalog', icon: '📦' },
-  { name: 'Mes Commandes', href: '/b2b/orders', icon: '🛒' },
-  { name: 'Factures', href: '/b2b/invoices', icon: '📄' },
-  { name: 'Profil', href: '/b2b/profile', icon: '👤' },
+  { name: 'Dashboard', href: '/b2b', icon: DashboardIcon },
+  { name: 'Catalogue', href: '/b2b/catalog', icon: ProductsIcon },
+  { name: 'Mes Commandes', href: '/b2b/orders', icon: OrdersIcon },
+  { name: 'Factures', href: '/b2b/invoices', icon: BoxIcon },
+  { name: 'Profil', href: '/b2b/profile', icon: ProfileIcon },
 ];
 
 export default function B2BLayout({
@@ -51,6 +58,7 @@ export default function B2BLayout({
           <nav className="mt-8 px-4 space-y-2">
             {navigation.map((item) => {
               const isActive = pathname === item.href;
+              const Icon = item.icon;
               return (
                 <Link
                   key={item.name}
@@ -62,7 +70,7 @@ export default function B2BLayout({
                   }`}
                   onClick={() => setSidebarOpen(false)}
                 >
-                  <span className="text-xl">{item.icon}</span>
+                  <Icon className="w-4 h-4" />
                   <span className="font-medium">{item.name}</span>
                 </Link>
               );
@@ -92,6 +100,7 @@ export default function B2BLayout({
           <nav className="flex-1 px-4 py-6 space-y-2">
             {navigation.map((item) => {
               const isActive = pathname === item.href;
+              const Icon = item.icon;
               return (
                 <Link
                   key={item.name}
@@ -102,7 +111,7 @@ export default function B2BLayout({
                       : 'text-gray-700 hover:bg-gray-100'
                   }`}
                 >
-                  <span className="text-xl">{item.icon}</span>
+                  <Icon className="w-4 h-4" />
                   <span className="font-medium">{item.name}</span>
                 </Link>
               );

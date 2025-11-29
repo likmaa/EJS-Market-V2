@@ -2,6 +2,7 @@
 
 import { Card, CardContent } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
+import { BoxIcon } from '@/components/admin/AdminIcons';
 
 // Données mockées - à remplacer par des appels API
 const mockInvoices = [
@@ -82,7 +83,10 @@ export default function B2BInvoicesPage() {
                       window.open(invoice.downloadUrl, '_blank');
                     }}
                   >
-                    📥 Télécharger
+                    <span className="flex items-center gap-2">
+                      <BoxIcon className="w-4 h-4" />
+                      <span>Télécharger</span>
+                    </span>
                   </Button>
                 </div>
               </div>
