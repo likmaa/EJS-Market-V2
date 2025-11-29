@@ -149,6 +149,27 @@ export default function BeProPage() {
                 Achetez nos produits électroniques et de jardinage en gros à prix préférentiels 
                 et développez votre activité de revente avec des marges compétitives.
               </p>
+              {/* CTA principaux */}
+              <div className="flex flex-wrap gap-4 mb-8">
+                <Link href="/register?type=b2b">
+                  <Button
+                    variant="primary"
+                    size="lg"
+                    className="bg-white text-violet-electric hover:bg-violet-100 border-none"
+                  >
+                    Ouvrir un compte B2B
+                  </Button>
+                </Link>
+                <Link href="/login?callbackUrl=%2Fb2b">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="border-white text-white hover:bg-white/10"
+                  >
+                    Se connecter en tant que B2B
+                  </Button>
+                </Link>
+              </div>
               <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20 mb-6">
                 <p className="text-white/90 leading-relaxed">
                   <strong className="font-bold">Comment ça fonctionne ?</strong> En tant que grossiste, 
