@@ -81,6 +81,8 @@ export default function OrderDetailPage() {
     amount: '',
     reason: '',
   });
+  const [isUpdatingStatus, setIsUpdatingStatus] = useState(false);
+  const [showStatusModal, setShowStatusModal] = useState(false);
 
   useEffect(() => {
     async function fetchOrder() {
@@ -173,6 +175,30 @@ export default function OrderDetailPage() {
     }
   };
 
+  const handleStatusUpdate = async (newStatus: string) => {
+    setIsUpdatingStatus(true);
+    try {
+      const response = await fetch(`/api/admin/orders/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Erreur lors de la mise à jour du statut');
+      }
+
+      const data = await response.json();
+      setOrder(data.order);
+      setShowStatusModal(false);
+    } catch (error) {
+      alert(error instanceof Error ? error.message : 'Erreur lors de la mise à jour');
+    } finally {
+      setIsUpdatingStatus(false);
+    }
+  };
+
   const canRefund =
     order.status !== 'REFUNDED' &&
     order.status !== 'CANCELLED' &&
@@ -198,13 +224,36 @@ export default function OrderDetailPage() {
         </div>
         <div className="flex items-center gap-3">
           <span
-            className={`inline-flex px-3 py-1 text-sm font-semibold rounded-full ${
-              statusColors[order.status as keyof typeof statusColors]
-            }`}
+            className={`inline-flex px-3 py-1 text-sm font-semibold rounded-full ${statusColors[order.status as keyof typeof statusColors]
+              }`}
           >
             {statusLabels[order.status as keyof typeof statusLabels]}
           </span>
-          <Button variant="outline">Modifier le statut</Button>
+          <div className="relative">
+            <Button
+              variant="outline"
+              onClick={() => setShowStatusModal(!showStatusModal)}
+              disabled={isUpdatingStatus}
+            >
+              {isUpdatingStatus ? 'Mise à jour...' : 'Modifier le statut'}
+            </Button>
+
+            {showStatusModal && (
+              <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-200 py-1 z-10">
+                {Object.entries(statusLabels).map(([value, label]) => (
+                  <button
+                    key={value}
+                    onClick={() => handleStatusUpdate(value)}
+                    disabled={value === order.status}
+                    className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-50 transition-colors ${value === order.status ? 'text-gray-400 cursor-not-allowed' : 'text-gray-700'
+                      }`}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -228,31 +277,31 @@ export default function OrderDetailPage() {
                     item.products?.images?.[0] ||
                     'https://via.placeholder.com/100x100.png?text=Produit';
                   return (
-                  <div
-                    key={item.id}
-                    className="flex items-center gap-4 p-4 rounded-lg bg-gray-50"
-                  >
-                    <div className="relative w-16 h-16 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0">
-                      <img
-                        src={image}
-                        alt={productName}
-                        className="w-full h-full object-cover"
-                      />
+                    <div
+                      key={item.id}
+                      className="flex items-center gap-4 p-4 rounded-lg bg-gray-50"
+                    >
+                      <div className="relative w-16 h-16 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0">
+                        <img
+                          src={image}
+                          alt={productName}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-medium text-gray-900">{productName}</p>
+                        <p className="text-sm text-gray-500">SKU: {sku}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-sm text-gray-500">Quantité: {item.quantity}</p>
+                        <p className="font-semibold text-gray-900">
+                          {((item.priceHT * item.quantity * (1 + item.vatRate)) / 100).toLocaleString('fr-FR', {
+                            style: 'currency',
+                            currency: 'EUR',
+                          })}
+                        </p>
+                      </div>
                     </div>
-                    <div className="flex-1">
-                      <p className="font-medium text-gray-900">{productName}</p>
-                      <p className="text-sm text-gray-500">SKU: {sku}</p>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-sm text-gray-500">Quantité: {item.quantity}</p>
-                      <p className="font-semibold text-gray-900">
-                        {((item.priceHT * item.quantity * (1 + item.vatRate)) / 100).toLocaleString('fr-FR', {
-                          style: 'currency',
-                          currency: 'EUR',
-                        })}
-                      </p>
-                    </div>
-                  </div>
                   );
                 })}
               </div>
@@ -374,68 +423,70 @@ export default function OrderDetailPage() {
       </div>
 
       {/* Modal de remboursement */}
-      {showRefundModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
-            <h3 className="text-lg font-semibold mb-4">Effectuer un remboursement</h3>
-            <form onSubmit={handleRefund} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Montant (€) - Laisser vide pour remboursement total
-                </label>
-                <input
-                  type="number"
-                  step="0.01"
-                  min="0"
-                  max={(order.totalTTC / 100).toFixed(2)}
-                  value={refundData.amount}
-                  onChange={(e) => setRefundData({ ...refundData, amount: e.target.value })}
-                  placeholder={`Max: ${(order.totalTTC / 100).toFixed(2)}€`}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-electric"
-                />
-                <p className="text-xs text-gray-500 mt-1">
-                  Montant total: {(order.totalTTC / 100).toFixed(2)}€
-                </p>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Raison du remboursement *
-                </label>
-                <textarea
-                  required
-                  rows={3}
-                  value={refundData.reason}
-                  onChange={(e) => setRefundData({ ...refundData, reason: e.target.value })}
-                  placeholder="Ex: Produit défectueux, demande client, etc."
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-electric"
-                />
-              </div>
-              <div className="flex gap-3 pt-4">
-                <Button
-                  type="submit"
-                  variant="primary"
-                  className="flex-1 bg-red-600 hover:bg-red-700"
-                  disabled={isProcessingRefund}
-                >
-                  {isProcessingRefund ? 'Traitement...' : 'Confirmer le remboursement'}
-                </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="flex-1"
-                  onClick={() => {
-                    setShowRefundModal(false);
-                    setRefundData({ amount: '', reason: '' });
-                  }}
-                >
-                  Annuler
-                </Button>
-              </div>
-            </form>
+      {
+        showRefundModal && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+              <h3 className="text-lg font-semibold mb-4">Effectuer un remboursement</h3>
+              <form onSubmit={handleRefund} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Montant (€) - Laisser vide pour remboursement total
+                  </label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    max={(order.totalTTC / 100).toFixed(2)}
+                    value={refundData.amount}
+                    onChange={(e) => setRefundData({ ...refundData, amount: e.target.value })}
+                    placeholder={`Max: ${(order.totalTTC / 100).toFixed(2)}€`}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-electric"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Montant total: {(order.totalTTC / 100).toFixed(2)}€
+                  </p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Raison du remboursement *
+                  </label>
+                  <textarea
+                    required
+                    rows={3}
+                    value={refundData.reason}
+                    onChange={(e) => setRefundData({ ...refundData, reason: e.target.value })}
+                    placeholder="Ex: Produit défectueux, demande client, etc."
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-electric"
+                  />
+                </div>
+                <div className="flex gap-3 pt-4">
+                  <Button
+                    type="submit"
+                    variant="primary"
+                    className="flex-1 bg-red-600 hover:bg-red-700"
+                    disabled={isProcessingRefund}
+                  >
+                    {isProcessingRefund ? 'Traitement...' : 'Confirmer le remboursement'}
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="flex-1"
+                    onClick={() => {
+                      setShowRefundModal(false);
+                      setRefundData({ amount: '', reason: '' });
+                    }}
+                  >
+                    Annuler
+                  </Button>
+                </div>
+              </form>
+            </div>
           </div>
-        </div>
-      )}
-    </div>
+        )
+      }
+    </div >
   );
 }
 

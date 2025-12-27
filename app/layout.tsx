@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import { CartProvider } from "@/contexts/CartContext";
 import { WishlistProvider } from "@/contexts/WishlistContext";
@@ -20,17 +20,18 @@ export const metadata: Metadata = {
   title: "Electrónica & Jardín Store Europe",
   description: "Plateforme E-commerce multi-produits pour l'Europe",
   manifest: "/manifest.json",
-  themeColor: "#7C3AED",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
     title: "eJS MARKET",
   },
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 5,
-  },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: "#7C3AED",
 };
 
 export default function RootLayout({

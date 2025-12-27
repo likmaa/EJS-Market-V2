@@ -10,10 +10,15 @@ const envSchema = z.object({
   NEXTAUTH_URL: z.string().url().optional(),
   NEXTAUTH_SECRET: z.string().min(32, 'NEXTAUTH_SECRET must be at least 32 characters'),
   
-  // Stripe
+  // Stripe (optionnel - selon le processeur de paiement choisi)
   STRIPE_PUBLIC_KEY: z.string().startsWith('pk_').optional(),
   STRIPE_SECRET_KEY: z.string().startsWith('sk_').optional(),
   STRIPE_WEBHOOK_SECRET: z.string().startsWith('whsec_').optional(),
+
+  // Algolia (optionnel - recherche)
+  NEXT_PUBLIC_ALGOLIA_APP_ID: z.string().optional(),
+  NEXT_PUBLIC_ALGOLIA_API_KEY: z.string().optional(),
+  ALGOLIA_ADMIN_API_KEY: z.string().optional(),
   
   // Node environment
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
@@ -39,6 +44,10 @@ export const env = {
   STRIPE_PUBLIC_KEY: process.env.STRIPE_PUBLIC_KEY,
   STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
   STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
+   // Algolia
+  NEXT_PUBLIC_ALGOLIA_APP_ID: process.env.NEXT_PUBLIC_ALGOLIA_APP_ID,
+  NEXT_PUBLIC_ALGOLIA_API_KEY: process.env.NEXT_PUBLIC_ALGOLIA_API_KEY,
+  ALGOLIA_ADMIN_API_KEY: process.env.ALGOLIA_ADMIN_API_KEY,
   NODE_ENV: (process.env.NODE_ENV || 'development') as 'development' | 'production' | 'test',
 } as const;
 

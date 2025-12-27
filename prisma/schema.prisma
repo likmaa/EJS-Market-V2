@@ -221,7 +221,7 @@ model testimonials {
 model users {
   id              String      @id
   email           String      @unique
-  passwordHash    String
+  passwordHash    String?
   name            String?
   role            UserRole    @default(CUSTOMER)
   isEmailVerified Boolean     @default(false)

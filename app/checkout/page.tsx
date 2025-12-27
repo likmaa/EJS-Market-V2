@@ -9,15 +9,19 @@ import { Button } from '@/components/ui/Button';
 import { Card, CardContent } from '@/components/ui/Card';
 import { useCart } from '@/contexts/CartContext';
 import { formatPrice, calculateTTC } from '@/lib/utils';
+import { useSession } from 'next-auth/react';
+import { Toast } from '@/components/Toast';
 
 export default function CheckoutPage() {
   const router = useRouter();
-  const { cart, totalTTC, clearCart } = useCart();
+  const { data: session, status: sessionStatus } = useSession();
+  const { cart, totalTTC, totalHT, totalVAT, clearCart } = useCart();
   const [isProcessing, setIsProcessing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
-    email: '',
-    firstName: '',
-    lastName: '',
+    email: session?.user?.email || '',
+    firstName: session?.user?.name?.split(' ')[0] || '',
+    lastName: session?.user?.name?.split(' ').slice(1).join(' ') || '',
     address: '',
     city: '',
     postalCode: '',
@@ -25,18 +29,43 @@ export default function CheckoutPage() {
     phone: '',
   });
 
-  const [paymentMethod, setPaymentMethod] = useState('card');
+  const [paymentMethod, setPaymentMethod] = useState('virement');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsProcessing(true);
+    setError(null);
 
-    // Simuler le traitement de la commande
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    try {
+      const response = await fetch('/api/orders/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formData,
+          paymentMethod,
+          items: cart,
+          totalHT,
+          totalTTC,
+          vatAmount: totalVAT,
+          shippingCost: 0, // À adapter si besoin
+        }),
+      });
 
-    // Vider le panier et rediriger vers la page de confirmation
-    clearCart();
-    router.push('/orders?success=true');
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Une erreur est survenue lors de la commande');
+      }
+
+      // Vider le panier et rediriger vers la page de confirmation
+      clearCart();
+      router.push(`/orders/confirmation/${data.orderId}`);
+    } catch (err: any) {
+      setError(err.message);
+      setIsProcessing(false);
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -45,6 +74,14 @@ export default function CheckoutPage() {
       [e.target.name]: e.target.value,
     });
   };
+
+  if (sessionStatus === 'loading') {
+    return (
+      <div className="min-h-screen bg-off-white flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-violet-electric"></div>
+      </div>
+    );
+  }
 
   if (cart.length === 0) {
     return (
@@ -207,36 +244,37 @@ export default function CheckoutPage() {
                     <div className="pt-6 border-t border-gray-200">
                       <h3 className="text-lg font-bold text-black-deep mb-4">Méthode de paiement</h3>
                       <div className="space-y-3">
-                        <label className="flex items-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-violet-electric transition-colors">
+                        <label className="flex items-center p-4 border-2 border-violet-electric bg-violet-electric/5 rounded-lg cursor-pointer transition-colors">
                           <input
                             type="radio"
                             name="payment"
-                            value="card"
-                            checked={paymentMethod === 'card'}
+                            value="virement"
+                            checked={paymentMethod === 'virement'}
                             onChange={(e) => setPaymentMethod(e.target.value)}
-                            className="mr-3"
+                            className="mr-3 text-violet-electric focus:ring-violet-electric"
                           />
                           <div className="flex-1">
-                            <span className="font-medium">Carte bancaire</span>
-                            <p className="text-sm text-gray-500">Visa, Mastercard, American Express</p>
+                            <span className="font-medium">Virement bancaire</span>
+                            <p className="text-sm text-gray-500">Traitement manuel après réception des fonds (IBAN fourni après validation)</p>
                           </div>
                         </label>
-                        <label className="flex items-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-violet-electric transition-colors">
-                          <input
-                            type="radio"
-                            name="payment"
-                            value="paypal"
-                            checked={paymentMethod === 'paypal'}
-                            onChange={(e) => setPaymentMethod(e.target.value)}
-                            className="mr-3"
-                          />
-                          <div className="flex-1">
-                            <span className="font-medium">PayPal</span>
-                            <p className="text-sm text-gray-500">Paiement sécurisé via PayPal</p>
-                          </div>
-                        </label>
+
+                        <div className="p-4 bg-amber-50 rounded-lg border border-amber-200">
+                          <p className="text-sm text-amber-800 flex gap-2">
+                            <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            Le virement bancaire est actuellement le seul moyen de paiement accepté.
+                          </p>
+                        </div>
                       </div>
                     </div>
+
+                    {error && (
+                      <div className="p-4 bg-red-50 text-red-600 rounded-lg text-sm border border-red-100 italic">
+                        {error}
+                      </div>
+                    )}
 
                     <Button
                       type="submit"
@@ -257,7 +295,7 @@ export default function CheckoutPage() {
               <Card className="sticky top-8">
                 <CardContent className="p-6">
                   <h2 className="text-xl font-bold text-black-deep mb-6">Récapitulatif</h2>
-                  
+
                   <div className="space-y-4 mb-6">
                     {cart.map((item) => (
                       <div key={item.productId} className="flex gap-4">

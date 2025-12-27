@@ -7,7 +7,7 @@ Plateforme E-commerce multi-produits (High-tech + Jardinage) pour le marché eur
 - **Frontend/Backend** : Next.js 15+ (App Router) + TypeScript
 - **Base de données** : PostgreSQL managé (Neon) + Prisma ORM
 - **Authentification** : NextAuth.js
-- **Paiements** : Stripe
+- **Paiements** : Carte de crédit / Virement bancaire
 - **Recherche** : Algolia
 - **Hébergement** : Vercel
 
@@ -60,7 +60,8 @@ Toute la documentation du projet est disponible dans le dossier [`docs/`](./docs
 - SSL/TLS automatique (Vercel)
 - Validation Zod sur tous les inputs
 - Protection CSRF/XSS intégrée
-- 3D Secure via Stripe (DSP2)
+- Paiement sécurisé par carte (conformité PCI DSS)
+- Virement bancaire avec validation manuelle
 - Backups automatiques (fournisseur PostgreSQL managé)
 
 ## 📝 License

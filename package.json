@@ -21,6 +21,7 @@
     "reset:admin": "dotenv -e .env.local -- tsx scripts/reset-admin-password.ts"
   },
   "dependencies": {
+    "algoliasearch": "^5.7.0",
     "@auth/prisma-adapter": "^2.11.1",
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/sortable": "^10.0.0",
