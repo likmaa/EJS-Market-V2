@@ -40,6 +40,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    if (!user.passwordHash) {
+      return NextResponse.json(
+        { error: 'Ce compte n\'a pas de mot de passe à changer' },
+        { status: 400 }
+      );
+    }
+
     // Vérifier le mot de passe actuel
     const isCurrentPasswordValid = await bcrypt.compare(
       validatedData.currentPassword,

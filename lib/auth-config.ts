@@ -20,7 +20,7 @@ export const authOptions = {
 
         try {
           console.log('[NextAuth] Tentative de connexion pour:', credentials.email);
-          
+
           const user = await prisma.users.findUnique({
             where: {
               email: credentials.email as string,
@@ -33,6 +33,11 @@ export const authOptions = {
           }
 
           console.log('[NextAuth] Utilisateur trouvé:', user.email, 'Rôle:', user.role);
+
+          if (!user.passwordHash) {
+            console.error('[NextAuth] L\'utilisateur n\'a pas de mot de passe défini:', credentials.email);
+            return null;
+          }
 
           const isPasswordValid = await bcrypt.compare(
             credentials.password as string,
