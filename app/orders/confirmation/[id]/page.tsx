@@ -8,6 +8,8 @@ import { Button } from '@/components/ui/Button';
 import { Card, CardContent } from '@/components/ui/Card';
 import { formatPrice } from '@/lib/utils';
 
+import { env } from '@/lib/env';
+
 export default function OrderConfirmationPage() {
     const params = useParams();
     const orderId = params.id as string;
@@ -77,15 +79,19 @@ export default function OrderConfirmationPage() {
                             <div className="bg-violet-soft/30 rounded-xl p-6 space-y-4 mb-6">
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
                                     <span className="text-gray-500 font-medium">Bénéficiaire :</span>
-                                    <span className="md:col-span-2 font-bold text-black-deep">EJS MARKET EUROPE SL</span>
+                                    <span className="md:col-span-2 font-bold text-black-deep">{env.BANK_BENEFICIARY}</span>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                    <span className="text-gray-500 font-medium">Banque :</span>
+                                    <span className="md:col-span-2 font-bold text-black-deep">{env.BANK_NAME}</span>
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
                                     <span className="text-gray-500 font-medium">IBAN :</span>
-                                    <span className="md:col-span-2 font-mono font-bold text-black-deep text-lg">ES76 1234 5678 9012 3456 7890</span>
+                                    <span className="md:col-span-2 font-mono font-bold text-black-deep text-lg">{env.BANK_IBAN}</span>
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
                                     <span className="text-gray-500 font-medium">BIC / SWIFT :</span>
-                                    <span className="md:col-span-2 font-mono font-bold text-black-deep">BCIESMMXXXX</span>
+                                    <span className="md:col-span-2 font-mono font-bold text-black-deep">{env.BANK_BIC}</span>
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
                                     <span className="text-gray-500 font-medium">Montant :</span>

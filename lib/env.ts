@@ -5,21 +5,22 @@ import { z } from 'zod';
 const envSchema = z.object({
   // Database
   DATABASE_URL: z.string().url(),
-  
+
   // NextAuth
   NEXTAUTH_URL: z.string().url().optional(),
   NEXTAUTH_SECRET: z.string().min(32, 'NEXTAUTH_SECRET must be at least 32 characters'),
-  
-  // Stripe (optionnel - selon le processeur de paiement choisi)
-  STRIPE_PUBLIC_KEY: z.string().startsWith('pk_').optional(),
-  STRIPE_SECRET_KEY: z.string().startsWith('sk_').optional(),
-  STRIPE_WEBHOOK_SECRET: z.string().startsWith('whsec_').optional(),
+
+  // Bank Details (pour virement)
+  NEXT_PUBLIC_BANK_NAME: z.string().optional(),
+  NEXT_PUBLIC_BANK_IBAN: z.string().optional(),
+  NEXT_PUBLIC_BANK_BIC: z.string().optional(),
+  NEXT_PUBLIC_BANK_BENEFICIARY: z.string().optional(),
 
   // Algolia (optionnel - recherche)
   NEXT_PUBLIC_ALGOLIA_APP_ID: z.string().optional(),
   NEXT_PUBLIC_ALGOLIA_API_KEY: z.string().optional(),
   ALGOLIA_ADMIN_API_KEY: z.string().optional(),
-  
+
   // Node environment
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
 });
@@ -41,10 +42,12 @@ export const env = {
   DATABASE_URL: process.env.DATABASE_URL!,
   NEXTAUTH_URL: process.env.NEXTAUTH_URL || 'http://localhost:3000',
   NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET!,
-  STRIPE_PUBLIC_KEY: process.env.STRIPE_PUBLIC_KEY,
-  STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
-  STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
-   // Algolia
+  // Bank Details
+  BANK_NAME: process.env.NEXT_PUBLIC_BANK_NAME || 'BANQUE CENTRALE',
+  BANK_IBAN: process.env.NEXT_PUBLIC_BANK_IBAN || 'ES76 1234 5678 9012 3456 7890',
+  BANK_BIC: process.env.NEXT_PUBLIC_BANK_BIC || 'BCIESMMXXXX',
+  BANK_BENEFICIARY: process.env.NEXT_PUBLIC_BANK_BENEFICIARY || 'EJS MARKET EUROPE SL',
+  // Algolia
   NEXT_PUBLIC_ALGOLIA_APP_ID: process.env.NEXT_PUBLIC_ALGOLIA_APP_ID,
   NEXT_PUBLIC_ALGOLIA_API_KEY: process.env.NEXT_PUBLIC_ALGOLIA_API_KEY,
   ALGOLIA_ADMIN_API_KEY: process.env.ALGOLIA_ADMIN_API_KEY,

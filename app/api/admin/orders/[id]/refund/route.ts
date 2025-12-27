@@ -69,20 +69,14 @@ export async function POST(
     const refundAmount = validatedData.amount || order.totalTTC;
     const isPartialRefund = validatedData.amount && validatedData.amount < order.totalTTC;
 
-    // TODO: Intégrer avec Stripe pour le remboursement réel
-    // Pour l'instant, on met juste à jour le statut
-    // const refund = await stripe.refunds.create({
-    //   payment_intent: order.paymentIntentId!,
-    //   amount: refundAmount,
-    //   reason: 'requested_by_customer',
-    // });
+    // Pour l'instant, on met juste à jour le statut de la commande en base de données.
+    // Le remboursement réel doit être effectué manuellement via virement bancaire.
 
     // Mettre à jour le statut de la commande
     const updatedOrder = await prisma.orders.update({
       where: { id },
       data: {
         status: isPartialRefund ? 'PROCESSING' : 'REFUNDED',
-        // TODO: Ajouter un champ refundAmount dans le schéma si nécessaire
       },
     });
 

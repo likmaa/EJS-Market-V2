@@ -48,17 +48,17 @@ export default function HelpPage() {
         {
           id: 'payment-1',
           question: 'Quels moyens de paiement acceptez-vous ?',
-          answer: 'Nous acceptons les cartes bancaires (Visa, Mastercard), PayPal, et pour les clients professionnels, les virements bancaires.',
+          answer: 'Actuellement, nous acceptons uniquement les paiements par virement bancaire pour garantir une sécurité maximale. Les coordonnées bancaires sont fournies à la fin de votre commande.',
         },
         {
           id: 'payment-2',
           question: 'Mes paiements sont-ils sécurisés ?',
-          answer: 'Oui, tous nos paiements sont sécurisés par cryptage SSL. Nous ne stockons jamais vos informations bancaires complètes.',
+          answer: 'Oui, le virement bancaire est l\'une des méthodes les plus sûres. De plus, toutes les données de notre site sont protégées par un cryptage SSL.',
         },
         {
           id: 'payment-3',
-          question: 'Quand serai-je débité ?',
-          answer: 'Vous serez débité uniquement lorsque votre commande sera expédiée, sauf pour les précommandes où le paiement est immédiat.',
+          question: 'Quand ma commande sera-t-elle validée ?',
+          answer: 'Votre commande sera validée et préparée dès que nous aurons reçu la confirmation de réception des fonds par notre banque (généralement sous 24h à 48h).',
         },
       ],
     },
@@ -250,9 +250,8 @@ export default function HelpPage() {
                       <h2 className="text-xl font-bold text-black-deep">{category.title}</h2>
                     </div>
                     <svg
-                      className={`w-6 h-6 text-gray-400 transition-transform ${
-                        openCategory === category.id ? 'rotate-180' : ''
-                      }`}
+                      className={`w-6 h-6 text-gray-400 transition-transform ${openCategory === category.id ? 'rotate-180' : ''
+                        }`}
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -278,9 +277,8 @@ export default function HelpPage() {
                             >
                               <h3 className="font-semibold text-black-deep flex-1">{faq.question}</h3>
                               <svg
-                                className={`w-5 h-5 text-violet-electric flex-shrink-0 transition-transform ${
-                                  openQuestion === faq.id ? 'rotate-180' : ''
-                                }`}
+                                className={`w-5 h-5 text-violet-electric flex-shrink-0 transition-transform ${openQuestion === faq.id ? 'rotate-180' : ''
+                                  }`}
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
