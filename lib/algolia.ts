@@ -1,12 +1,12 @@
-import algoliasearch, { SearchClient, SearchIndex } from 'algoliasearch';
+import { algoliasearch } from 'algoliasearch';
 import { env } from './env';
 
 // Nom d'index par défaut pour les produits
 export const ALGOLIA_PRODUCTS_INDEX = 'products';
 
 type AlgoliaClients = {
-  client: SearchClient | null;
-  productsIndex: SearchIndex | null;
+  client: any;
+  productsIndex: any;
 };
 
 let cached: AlgoliaClients | null = null;
@@ -32,10 +32,16 @@ export function getAlgoliaClients(): AlgoliaClients {
     return cached;
   }
 
-  const client = algoliasearch(appId, adminKey);
-  const productsIndex = client.initIndex(ALGOLIA_PRODUCTS_INDEX);
+  try {
+    const client = algoliasearch(appId, adminKey);
+    // Dans Algolia v5, on n'utilise plus initIndex sur le client de base.
+    // L'index est spécifié lors des appels de méthode sur le client.
+    cached = { client, productsIndex: null };
+  } catch (error) {
+    console.error('[Algolia] Erreur d\'initialisation:', error);
+    cached = { client: null, productsIndex: null };
+  }
 
-  cached = { client, productsIndex };
   return cached;
 }
 

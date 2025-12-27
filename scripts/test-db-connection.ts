@@ -6,22 +6,22 @@ const prisma = new PrismaClient();
 async function testConnection() {
   try {
     console.log('🔍 Test de connexion à la base de données...\n');
-    
+
     // Test 1: Connexion de base
     console.log('1️⃣ Test de connexion...');
     await prisma.$connect();
     console.log('✅ Connexion réussie\n');
-    
+
     // Test 2: Vérifier que l'utilisateur admin existe
     console.log('2️⃣ Vérification de l\'utilisateur admin...');
     const admin = await prisma.users.findUnique({
       where: { email: 'admin@ejsmarket.com' },
     });
-    
+
     if (!admin) {
       console.log('❌ Utilisateur admin introuvable');
       console.log('💡 Création de l\'utilisateur admin...');
-      
+
       const passwordHash = await bcrypt.hash('Admin123!', 12);
       const newAdmin = await prisma.users.create({
         data: {
@@ -42,19 +42,19 @@ async function testConnection() {
       console.log('   Email:', admin.email);
       console.log('   Rôle:', admin.role);
       console.log('   ID:', admin.id);
-      
+
       // Test 3: Vérifier le mot de passe
       console.log('\n3️⃣ Test du mot de passe...');
       const testPassword = 'Admin123!';
-      const isPasswordValid = await bcrypt.compare(testPassword, admin.passwordHash);
-      
+      const isPasswordValid = await bcrypt.compare(testPassword, admin.passwordHash || "");
+
       if (isPasswordValid) {
         console.log('✅ Mot de passe valide');
         console.log('   Mot de passe testé:', testPassword);
       } else {
         console.log('❌ Mot de passe invalide');
         console.log('💡 Réinitialisation du mot de passe...');
-        
+
         const newPasswordHash = await bcrypt.hash(testPassword, 12);
         await prisma.users.update({
           where: { email: 'admin@ejsmarket.com' },
@@ -64,17 +64,17 @@ async function testConnection() {
         console.log('   Nouveau mot de passe:', testPassword);
       }
     }
-    
+
     // Test 4: Compter les utilisateurs
     console.log('\n4️⃣ Statistiques de la base de données...');
     const userCount = await prisma.users.count();
     console.log(`   Nombre d'utilisateurs: ${userCount}`);
-    
+
     console.log('\n✅ Tous les tests sont passés !');
     console.log('\n📋 Identifiants de connexion :');
     console.log('   Email: admin@ejsmarket.com');
     console.log('   Mot de passe: Admin123!');
-    
+
   } catch (error) {
     console.error('\n❌ Erreur lors du test:', error);
     if (error instanceof Error) {
