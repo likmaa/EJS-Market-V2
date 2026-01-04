@@ -3,7 +3,7 @@ FROM node:20-alpine AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Install all dependencies (including devDependencies for build)
+# Install all dependencies
 COPY package.json package-lock.json* ./
 RUN npm ci --include=dev
 
@@ -37,7 +37,11 @@ COPY --from=builder /app/public ./public
 RUN mkdir .next
 RUN chown nextjs:nodejs .next
 
-# Standalone output
+# IMPORTANT: Copy Prisma files for migrations/seeding in production
+COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/package.json ./package.json
+
+# Copy standalone output
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
@@ -47,5 +51,9 @@ EXPOSE 3000
 
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
+
+# Note: standalone server.js doesn't use the regular node_modules, 
+# but for npx prisma we might need them or the binaries.
+# The standalone output includes necessary pieces under node_modules inside standalone.
 
 CMD ["node", "server.js"]
