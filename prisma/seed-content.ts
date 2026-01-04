@@ -57,7 +57,9 @@ const currentImmersiveImages = [
   { url: '/img3.webp', name: 'PlayStation 5' },
 ];
 
-async function seedContent() {
+export async function seedContent() {
+  // Use a shared prisma instance or create a new one if not provided
+  const prisma = new PrismaClient();
   console.log('🌱 Importation des contenus actuels...\n');
 
   try {
@@ -119,7 +121,7 @@ async function seedContent() {
       try {
         // Vérifier si le témoignage existe déjà
         const existing = await prisma.testimonials.findFirst({
-          where: { 
+          where: {
             name: testimonial.name,
             product: testimonial.product,
           },
@@ -317,9 +319,5 @@ async function seedContent() {
   }
 }
 
-seedContent()
-  .catch((error) => {
-    console.error(error);
-    process.exit(1);
-  });
+
 

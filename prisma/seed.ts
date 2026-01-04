@@ -2,6 +2,7 @@ import { PrismaClient, UserRole } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import { config } from 'dotenv';
 import { resolve } from 'path';
+import { seedContent } from './seed-content';
 
 // Charger les variables d'environnement depuis .env.local
 config({ path: resolve(process.cwd(), '.env.local') });
@@ -838,6 +839,22 @@ async function main() {
     });
     console.log(`✅ Product created: ${product.name.fr}`);
   }
+
+  // Créer les paramètres du site par défaut
+  console.log('⚙️ Seeding site settings...');
+  await prisma.site_settings.upsert({
+    where: { id: 'global' },
+    update: {},
+    create: {
+      id: 'global',
+      newsBarText: 'Bienvenue sur EJS Market - Votre expert High-Tech & Jardin en Europe !',
+      updatedAt: new Date(),
+    },
+  });
+  console.log('✅ Site settings created');
+
+  // Appeler le seed de contenu additionnel
+  await seedContent();
 
   console.log('✨ Seeding completed!');
 }
