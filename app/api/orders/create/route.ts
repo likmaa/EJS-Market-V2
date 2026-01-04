@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/lib/auth-config';
 import { prisma } from '@/lib/prisma';
+import { Prisma } from '@prisma/client';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 
@@ -76,7 +77,7 @@ export async function POST(request: NextRequest) {
     };
 
     // Création de la commande dans une transaction Prisma
-    const order = await prisma.$transaction(async (tx) => {
+    const order = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
       // 1. Créer la commande
       const newOrder = await tx.orders.create({
         data: {
