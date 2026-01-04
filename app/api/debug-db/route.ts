@@ -38,6 +38,9 @@ export async function GET() {
             },
             env: {
                 DATABASE_URL_SET: !!process.env.DATABASE_URL,
+                NEXTAUTH_SECRET_SET: !!process.env.NEXTAUTH_SECRET,
+                NEXTAUTH_URL: process.env.NEXTAUTH_URL,
+                NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
                 NODE_ENV: process.env.NODE_ENV,
             }
         });
