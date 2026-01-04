@@ -134,44 +134,44 @@ export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [lastAddedProduct, setLastAddedProduct] = useState<{ name: string; image: string; quantity: number } | null>(null);
-  
+
   // États pour les filtres
   const [openDropdown, setOpenDropdown] = useState<'category' | 'univers' | null>(null);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedUnivers, setSelectedUnivers] = useState<string[]>([]);
-  
+
   // Options de filtres
   const categoryOptions = [
-    { 
-      id: 'electronics', 
-      label: 'Électronique', 
+    {
+      id: 'electronics',
+      label: 'Électronique',
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
         </svg>
       )
     },
-    { 
-      id: 'garden', 
-      label: 'Jardinage', 
+    {
+      id: 'garden',
+      label: 'Jardinage',
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
         </svg>
       )
     },
-    { 
-      id: 'gaming', 
-      label: 'Gaming', 
+    {
+      id: 'gaming',
+      label: 'Gaming',
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
         </svg>
       )
     },
-    { 
-      id: 'photo', 
-      label: 'Photo & Vidéo', 
+    {
+      id: 'photo',
+      label: 'Photo & Vidéo',
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
@@ -179,18 +179,18 @@ export default function Home() {
         </svg>
       )
     },
-    { 
-      id: 'mobility', 
-      label: 'E-Mobilité', 
+    {
+      id: 'mobility',
+      label: 'E-Mobilité',
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
         </svg>
       )
     },
-    { 
-      id: 'tools', 
-      label: 'Outils', 
+    {
+      id: 'tools',
+      label: 'Outils',
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
@@ -199,12 +199,12 @@ export default function Home() {
       )
     },
   ];
-  
+
   const universOptions = [
     { id: 'tech', label: 'Tech', icon: '💻' },
     { id: 'jardin', label: 'Jardin', icon: '🌿' },
   ];
-  
+
   // Calcul du nombre de filtres actifs
   const activeFiltersCount = useMemo(() => {
     let count = 0;
@@ -212,11 +212,11 @@ export default function Home() {
     if (selectedUnivers.length > 0) count += selectedUnivers.length;
     return count;
   }, [selectedCategories, selectedUnivers]);
-  
+
   // Références pour fermer les dropdowns au clic extérieur
   const categoryDropdownRef = useRef<HTMLDivElement>(null);
   const universDropdownRef = useRef<HTMLDivElement>(null);
-  
+
   // Fermer les dropdowns au clic extérieur - UNIQUEMENT quand un dropdown est ouvert
   useEffect(() => {
     // Ne créer l'écouteur QUE si un dropdown est ouvert
@@ -226,13 +226,13 @@ export default function Home() {
 
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Node;
-      
+
       // Ne JAMAIS fermer si le clic est dans le header (pour ne pas bloquer Explorer, Language, etc.)
       const header = document.querySelector('header');
       if (header && header.contains(target)) {
         return;
       }
-      
+
       // Ne pas fermer si le clic est dans les dropdowns de filtres
       if (categoryDropdownRef.current && categoryDropdownRef.current.contains(target)) {
         return;
@@ -240,22 +240,22 @@ export default function Home() {
       if (universDropdownRef.current && universDropdownRef.current.contains(target)) {
         return;
       }
-      
+
       // Fermer si le clic est vraiment en dehors
       setOpenDropdown(null);
     };
-    
+
     // Utiliser un délai pour éviter les conflits
     const timeoutId = setTimeout(() => {
       document.addEventListener('click', handleClickOutside);
     }, 100);
-    
+
     return () => {
       clearTimeout(timeoutId);
       document.removeEventListener('click', handleClickOutside);
     };
   }, [openDropdown]);
-  
+
   // Fonctions de gestion des filtres
   const toggleCategory = (categoryId: string) => {
     setSelectedCategories((prev) =>
@@ -264,7 +264,7 @@ export default function Home() {
         : [...prev, categoryId]
     );
   };
-  
+
   const toggleUnivers = (universId: string) => {
     setSelectedUnivers((prev) =>
       prev.includes(universId)
@@ -272,13 +272,13 @@ export default function Home() {
         : [...prev, universId]
     );
   };
-  
+
   const resetFilters = () => {
     setSelectedCategories([]);
     setSelectedUnivers([]);
     setOpenDropdown(null);
   };
-  
+
   const removeFilter = (type: 'category' | 'univers', id?: string) => {
     if (type === 'category' && id) {
       setSelectedCategories((prev) => prev.filter((catId) => catId !== id));
@@ -286,36 +286,36 @@ export default function Home() {
       setSelectedUnivers((prev) => prev.filter((universId) => universId !== id));
     }
   };
-  
+
   // États pour les carrousels
   const [currentTechIndex, setCurrentTechIndex] = useState(0);
   const [currentJardinIndex, setCurrentJardinIndex] = useState(0);
-  
+
   // Références pour les intervalles
   const techIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const jardinIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  
+
   // États pour la section immersive 3D
   const [currentImmersiveIndex, setCurrentImmersiveIndex] = useState(0);
   const immersiveIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  
-  
+
+
   // Motion values pour l'effet 3D parallax
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  
+
   // Smooth spring animations pour les valeurs de la souris
   const smoothX = useSpring(mouseX, { stiffness: 150, damping: 15 });
   const smoothY = useSpring(mouseY, { stiffness: 150, damping: 15 });
-  
+
   // Transform pour la rotation 3D
   const rotateX = useTransform(smoothY, [-0.5, 0.5], [10, -10]);
   const rotateY = useTransform(smoothX, [-0.5, 0.5], [-10, 10]);
-  
+
   // Transform pour la position de l'effet de lumière (glow) en pourcentage
   const glowXPercent = useTransform(smoothX, [-0.5, 0.5], [20, 80]);
   const glowYPercent = useTransform(smoothY, [-0.5, 0.5], [20, 80]);
-  
+
   // Charger les partenaires depuis l'API
   const [partnerLogos, setPartnerLogos] = useState<PartnerLogo[]>([]);
 
@@ -329,7 +329,7 @@ export default function Home() {
     product: string;
     date: string;
   }>>([]);
-  
+
   // Charger les images hero depuis l'API
   const [techImages, setTechImages] = useState<Array<{
     id: string;
@@ -341,7 +341,7 @@ export default function Home() {
     videoUrl?: string | null;
     thumbnailUrl?: string | null;
   }>>([]);
-  
+
   const [jardinImages, setJardinImages] = useState<Array<{
     id: string;
     url: string;
@@ -368,10 +368,10 @@ export default function Home() {
       try {
         const [techRes, gardenRes] = await Promise.all([
           fetch('/api/content/hero-images?type=tech', {
-            cache: 'force-cache', // Utiliser le cache du navigateur
+            cache: 'no-store',
           }),
           fetch('/api/content/hero-images?type=garden', {
-            cache: 'force-cache', // Utiliser le cache du navigateur
+            cache: 'no-store',
           }),
         ]);
 
@@ -429,7 +429,7 @@ export default function Home() {
     const fetchImmersiveImages = async () => {
       try {
         const res = await fetch('/api/content/immersive-images', {
-          cache: 'force-cache', // Utiliser le cache du navigateur
+          cache: 'no-store',
         });
         if (res.ok) {
           const data = await res.json();
@@ -461,7 +461,7 @@ export default function Home() {
     const fetchPartners = async () => {
       try {
         const res = await fetch('/api/content/partners', {
-          cache: 'force-cache', // Utiliser le cache du navigateur
+          cache: 'no-store',
         });
         if (res.ok) {
           const data = await res.json();
@@ -494,13 +494,13 @@ export default function Home() {
     const fetchTestimonials = async () => {
       try {
         const res = await fetch('/api/content/testimonials', {
-          cache: 'force-cache', // Utiliser le cache du navigateur
+          cache: 'no-store',
         });
         if (res.ok) {
           const data = await res.json();
           setTestimonials(data.testimonials.map((testimonial: any) => {
-            const text = typeof testimonial.text === 'string' 
-              ? JSON.parse(testimonial.text) 
+            const text = typeof testimonial.text === 'string'
+              ? JSON.parse(testimonial.text)
               : testimonial.text;
             return {
               id: testimonial.id,
@@ -530,7 +530,7 @@ export default function Home() {
   const getNextIndex = useCallback((current: number, length: number) => {
     return (current + 1) % length;
   }, []);
-  
+
   // Auto-play pour les carrousels - Avec intervalles différents pour éviter la synchronisation
   useEffect(() => {
     // Nettoyer les intervalles précédents s'ils existent
@@ -540,26 +540,26 @@ export default function Home() {
     if (jardinIntervalRef.current) {
       clearInterval(jardinIntervalRef.current);
     }
-    
+
     // Carrousel Tech - démarre immédiatement, change toutes les 8 secondes
     techIntervalRef.current = setInterval(() => {
       setCurrentTechIndex((prev) => (prev + 1) % techImages.length);
     }, 8000); // 8 secondes
-    
+
     // Carrousel Jardin - démarre avec un délai initial de 2 secondes, puis change toutes les 8.5 secondes
     // Des intervalles différents (8s vs 8.5s) garantissent qu'ils ne se synchroniseront jamais
     if (jardinImages.length > 0) {
       setTimeout(() => {
         // Première transition après 2 secondes
         setCurrentJardinIndex((prev) => (prev + 1) % jardinImages.length);
-        
+
         // Puis continue toutes les 8.5 secondes (différent de 8 secondes)
         jardinIntervalRef.current = setInterval(() => {
           setCurrentJardinIndex((prev) => (prev + 1) % jardinImages.length);
         }, 8500); // 8.5 secondes - différent de l'intervalle Tech
       }, 2000); // Délai initial de 2 secondes
     }
-    
+
     return () => {
       if (techIntervalRef.current) {
         clearInterval(techIntervalRef.current);
@@ -569,25 +569,25 @@ export default function Home() {
       }
     };
   }, [techImages.length, jardinImages.length]);
-  
+
   // Auto-play pour la section immersive - change toutes les 11 secondes
   useEffect(() => {
     if (immersiveIntervalRef.current) {
       clearInterval(immersiveIntervalRef.current);
     }
-    
+
     immersiveIntervalRef.current = setInterval(() => {
       setCurrentImmersiveIndex((prev) => (prev + 1) % immersiveImages.length);
     }, 11000); // 11 secondes
-    
+
     return () => {
       if (immersiveIntervalRef.current) {
         clearInterval(immersiveIntervalRef.current);
       }
     };
   }, [immersiveImages.length]);
-  
-  
+
+
   // Gestion du mouvement de la souris pour l'effet 3D
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -595,11 +595,11 @@ export default function Home() {
     const centerY = rect.top + rect.height / 2;
     const x = (e.clientX - centerX) / rect.width;
     const y = (e.clientY - centerY) / rect.height;
-    
+
     mouseX.set(x);
     mouseY.set(y);
   }, [mouseX, mouseY]);
-  
+
   const handleMouseLeave = useCallback(() => {
     mouseX.set(0);
     mouseY.set(0);
@@ -607,10 +607,10 @@ export default function Home() {
 
   useEffect(() => {
     if (titles.length === 0) return;
-    
+
     const currentTitle = titles[currentTitleIndex];
     if (!currentTitle) return;
-    
+
     const typingSpeed = isDeleting ? 50 : 100;
     const pauseTime = isDeleting ? 30 : 2000;
 
@@ -647,11 +647,10 @@ export default function Home() {
                   <div className="relative" ref={categoryDropdownRef}>
                     <button
                       onClick={() => setOpenDropdown(openDropdown === 'category' ? null : 'category')}
-                      className={`px-5 py-2.5 rounded-lg font-medium text-sm transition-all duration-200 flex items-center gap-2 ${
-                        openDropdown === 'category' || selectedCategories.length > 0
+                      className={`px-5 py-2.5 rounded-lg font-medium text-sm transition-all duration-200 flex items-center gap-2 ${openDropdown === 'category' || selectedCategories.length > 0
                           ? 'bg-violet-electric text-white shadow-md hover:bg-violet-700'
                           : 'bg-white text-gray-700 hover:bg-gray-50 hover:text-violet-electric'
-                      }`}
+                        }`}
                     >
                       Category
                       {selectedCategories.length > 0 && (
@@ -668,7 +667,7 @@ export default function Home() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                       </svg>
                     </button>
-                    
+
                     {/* Dropdown Menu */}
                     <AnimatePresence>
                       {openDropdown === 'category' && (
@@ -684,11 +683,10 @@ export default function Home() {
                               <button
                                 key={option.id}
                                 onClick={() => toggleCategory(option.id)}
-                                className={`w-full px-4 py-2.5 rounded-lg text-left text-sm transition-all duration-200 flex items-center gap-3 ${
-                                  selectedCategories.includes(option.id)
+                                className={`w-full px-4 py-2.5 rounded-lg text-left text-sm transition-all duration-200 flex items-center gap-3 ${selectedCategories.includes(option.id)
                                     ? 'bg-violet-electric/10 text-violet-electric font-medium'
                                     : 'text-gray-700 hover:bg-gray-50'
-                                }`}
+                                  }`}
                               >
                                 <span className="flex-shrink-0">{option.icon}</span>
                                 <span className="flex-1">{option.label}</span>
@@ -709,11 +707,10 @@ export default function Home() {
                   <div className="relative" ref={universDropdownRef}>
                     <button
                       onClick={() => setOpenDropdown(openDropdown === 'univers' ? null : 'univers')}
-                      className={`px-5 py-2.5 rounded-lg font-medium text-sm transition-all duration-200 flex items-center gap-2 ${
-                        openDropdown === 'univers' || selectedUnivers.length > 0
+                      className={`px-5 py-2.5 rounded-lg font-medium text-sm transition-all duration-200 flex items-center gap-2 ${openDropdown === 'univers' || selectedUnivers.length > 0
                           ? 'bg-violet-electric text-white shadow-md hover:bg-violet-700'
                           : 'bg-white text-gray-700 hover:bg-gray-50 hover:text-violet-electric'
-                      }`}
+                        }`}
                     >
                       Univers
                       {selectedUnivers.length > 0 && (
@@ -730,7 +727,7 @@ export default function Home() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                       </svg>
                     </button>
-                    
+
                     {/* Dropdown Menu */}
                     <AnimatePresence>
                       {openDropdown === 'univers' && (
@@ -746,11 +743,10 @@ export default function Home() {
                               <button
                                 key={option.id}
                                 onClick={() => toggleUnivers(option.id)}
-                                className={`w-full px-4 py-2.5 rounded-lg text-left text-sm transition-all duration-200 flex items-center gap-3 ${
-                                  selectedUnivers.includes(option.id)
+                                className={`w-full px-4 py-2.5 rounded-lg text-left text-sm transition-all duration-200 flex items-center gap-3 ${selectedUnivers.includes(option.id)
                                     ? 'bg-violet-electric/10 text-violet-electric font-medium'
                                     : 'text-gray-700 hover:bg-gray-50'
-                                }`}
+                                  }`}
                               >
                                 <span className="flex-shrink-0">{option.icon}</span>
                                 <span className="flex-1">{option.label}</span>
@@ -896,7 +892,7 @@ export default function Home() {
             <div className="h-[700px] overflow-hidden relative group bg-white rounded-lg border border-gray-200 transition-all duration-300 hover:scale-[1.02] hover:border-violet-electric/30">
               <div className="relative h-full w-full">
                 <div className="overflow-hidden relative h-full w-full">
-                  <div 
+                  <div
                     className="flex h-full transition-transform duration-700 ease-in-out"
                     style={{ transform: `translateX(-${currentTechIndex * 100}%)` }}
                   >
@@ -905,12 +901,12 @@ export default function Home() {
                       const isNext = index === getNextIndex(currentTechIndex, techImages.length);
                       // Charger seulement l'image visible et la suivante
                       const shouldLoad = isVisible || isNext;
-                      
+
                       return (
-                    <div
-                      key={product.id}
+                        <div
+                          key={product.id}
                           className="min-w-full h-full relative flex-shrink-0"
-                    >
+                        >
                           <div className="relative w-full h-full bg-gray-200">
                             {shouldLoad && (
                               product.mediaType === 'video' && product.videoUrl ? (
@@ -952,15 +948,14 @@ export default function Home() {
                           <p className="text-white text-2xl font-bold">
                             {techImages[currentTechIndex]?.price ? formatPrice(techImages[currentTechIndex].price * 100) : ''}
                           </p>
-                          <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                            techImages[currentTechIndex]?.available 
-                              ? 'bg-green-500 text-white' 
+                          <span className={`px-3 py-1 rounded-full text-xs font-medium ${techImages[currentTechIndex]?.available
+                              ? 'bg-green-500 text-white'
                               : 'bg-red-500 text-white'
-                          }`}>
+                            }`}>
                             {techImages[currentTechIndex]?.available ? 'En stock' : 'Rupture de stock'}
                           </span>
                         </div>
-                        <Link 
+                        <Link
                           href={`/products/${techImages[currentTechIndex]?.id}`}
                           className="inline-block text-sm text-violet-electric hover:underline font-normal"
                           aria-label={`Voir les détails de ${techImages[currentTechIndex]?.name}`}
@@ -970,16 +965,15 @@ export default function Home() {
                       </div>
                     </div>
                   </div>
-                  
+
                   {/* Indicateurs */}
                   <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-20 flex gap-2">
                     {techImages.map((_, index) => (
                       <button
                         key={index}
                         onClick={() => setCurrentTechIndex(index)}
-                        className={`h-2 rounded-full transition-all duration-300 ${
-                          index === currentTechIndex ? 'w-8 bg-violet-electric' : 'w-2 bg-white/50 hover:bg-white/75'
-                        }`}
+                        className={`h-2 rounded-full transition-all duration-300 ${index === currentTechIndex ? 'w-8 bg-violet-electric' : 'w-2 bg-white/50 hover:bg-white/75'
+                          }`}
                         aria-label={`Afficher le produit ${index + 1}`}
                         aria-current={index === currentTechIndex ? 'true' : 'false'}
                       />
@@ -1002,51 +996,51 @@ export default function Home() {
                 ) : (
                   <>
                     <div className="overflow-hidden relative h-full w-full">
-                      <div 
+                      <div
                         className="flex h-full transition-transform duration-700 ease-in-out"
                         style={{ transform: `translateX(-${currentJardinIndex * 100}%)` }}
                       >
                         {jardinImages.map((product, index) => {
-                      const isVisible = index === currentJardinIndex;
-                      const isNext = index === getNextIndex(currentJardinIndex, jardinImages.length);
-                      // Charger seulement l'image visible et la suivante
-                      const shouldLoad = isVisible || isNext;
-                      
-                      return (
-                    <div
-                      key={product.id}
-                          className="min-w-full h-full relative flex-shrink-0"
-                    >
-                          <div className="relative w-full h-full bg-gray-200" style={{ aspectRatio: '1 / 1' }}>
-                            {shouldLoad && (
-                              product.mediaType === 'video' && product.videoUrl ? (
-                                <video
-                                  src={product.videoUrl}
-                                  className="w-full h-full object-cover"
-                                  autoPlay
-                                  loop
-                                  muted
-                                  playsInline
-                                  poster={product.thumbnailUrl || product.url}
-                                />
-                              ) : (
-                                <Image
-                                  src={product.url}
-                                  alt={`${product.name} - Produit jardin`}
-                                  fill
-                                  className="object-cover"
-                                  sizes="(max-width: 1024px) 100vw, 50vw"
-                                  priority={index === 0}
-                                  loading={index === 0 ? 'eager' : 'lazy'}
-                                  quality={85}
-                                  placeholder="blur"
-                                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
-                                />
-                              )
-                            )}
-                          </div>
-                        </div>
-                      );
+                          const isVisible = index === currentJardinIndex;
+                          const isNext = index === getNextIndex(currentJardinIndex, jardinImages.length);
+                          // Charger seulement l'image visible et la suivante
+                          const shouldLoad = isVisible || isNext;
+
+                          return (
+                            <div
+                              key={product.id}
+                              className="min-w-full h-full relative flex-shrink-0"
+                            >
+                              <div className="relative w-full h-full bg-gray-200" style={{ aspectRatio: '1 / 1' }}>
+                                {shouldLoad && (
+                                  product.mediaType === 'video' && product.videoUrl ? (
+                                    <video
+                                      src={product.videoUrl}
+                                      className="w-full h-full object-cover"
+                                      autoPlay
+                                      loop
+                                      muted
+                                      playsInline
+                                      poster={product.thumbnailUrl || product.url}
+                                    />
+                                  ) : (
+                                    <Image
+                                      src={product.url}
+                                      alt={`${product.name} - Produit jardin`}
+                                      fill
+                                      className="object-cover"
+                                      sizes="(max-width: 1024px) 100vw, 50vw"
+                                      priority={index === 0}
+                                      loading={index === 0 ? 'eager' : 'lazy'}
+                                      quality={85}
+                                      placeholder="blur"
+                                      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+                                    />
+                                  )
+                                )}
+                              </div>
+                            </div>
+                          );
                         })}
                       </div>
                       {/* Informations produit en bas */}
@@ -1061,17 +1055,16 @@ export default function Home() {
                                 {jardinImages[currentJardinIndex]?.price ? formatPrice(jardinImages[currentJardinIndex].price * 100) : ''}
                               </p>
                               {jardinImages[currentJardinIndex] && (
-                                <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                                  jardinImages[currentJardinIndex].available 
-                                    ? 'bg-green-500 text-white' 
+                                <span className={`px-3 py-1 rounded-full text-xs font-medium ${jardinImages[currentJardinIndex].available
+                                    ? 'bg-green-500 text-white'
                                     : 'bg-red-500 text-white'
-                                }`}>
+                                  }`}>
                                   {jardinImages[currentJardinIndex].available ? 'En stock' : 'Rupture de stock'}
                                 </span>
                               )}
                             </div>
                             {jardinImages[currentJardinIndex] && (
-                              <Link 
+                              <Link
                                 href={`/products/${jardinImages[currentJardinIndex].id}`}
                                 className="inline-block text-sm text-violet-electric hover:underline font-normal"
                                 aria-label={`Voir les détails de ${jardinImages[currentJardinIndex].name}`}
@@ -1082,16 +1075,15 @@ export default function Home() {
                           </div>
                         </div>
                       </div>
-                      
+
                       {/* Indicateurs */}
                       <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-20 flex gap-2">
                         {jardinImages.map((_, index) => (
                           <button
                             key={index}
                             onClick={() => setCurrentJardinIndex(index)}
-                            className={`h-2 rounded-full transition-all duration-300 ${
-                              index === currentJardinIndex ? 'w-8 bg-green-garden' : 'w-2 bg-white/50 hover:bg-white/75'
-                            }`}
+                            className={`h-2 rounded-full transition-all duration-300 ${index === currentJardinIndex ? 'w-8 bg-green-garden' : 'w-2 bg-white/50 hover:bg-white/75'
+                              }`}
                             aria-label={`Afficher le produit ${index + 1}`}
                             aria-current={index === currentJardinIndex ? 'true' : 'false'}
                           />
@@ -1118,7 +1110,7 @@ export default function Home() {
               Votre marketplace premium pour l&apos;électronique et le jardinage intelligent. Des milliers de produits sélectionnés, livrés rapidement partout en Europe.
             </p>
           </div>
-          
+
           {/* Barre de filtres mobile uniquement sur la page d'accueil */}
           <div className="px-0">
             <MobileFiltersBar
@@ -1192,7 +1184,7 @@ export default function Home() {
                     <p className="text-xs text-gray-400 mb-2 font-normal">{product.category}</p>
                     <h3 className="font-bold text-black-deep text-xl leading-snug">{product.name}</h3>
                   </div>
-                  
+
                   {/* Section 2: By Creator + Price */}
                   <div className="border-b border-gray-200 pb-3 mb-3 flex items-baseline justify-between">
                     <div>
@@ -1205,7 +1197,7 @@ export default function Home() {
                       <span className="text-sm text-black-deep font-normal ml-1"> €</span>
                     </div>
                   </div>
-                  
+
                   {/* Section 3: Actions */}
                   <div className="pt-1 flex items-center justify-between" onClick={(e) => e.stopPropagation()}>
                     <button
@@ -1259,7 +1251,7 @@ export default function Home() {
       </section>
 
       {/* Section Immersive 3D - Produits Tech - Masquée sur mobile */}
-      <section 
+      <section
         className="hidden md:block relative w-full h-screen min-h-[800px] overflow-hidden bg-gradient-to-b from-black via-gray-900 to-black"
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
@@ -1277,7 +1269,7 @@ export default function Home() {
             {immersiveImages.map((product, index) => {
               const isVisible = index === currentImmersiveIndex;
               const isNext = index === (currentImmersiveIndex + 1) % immersiveImages.length;
-              
+
               return (
                 <motion.div
                   key={product.id}
@@ -1330,7 +1322,7 @@ export default function Home() {
               );
             })}
           </div>
-          
+
           {/* Effet de lumière/glow qui suit la souris */}
           <motion.div
             className="absolute pointer-events-none"
@@ -1344,7 +1336,7 @@ export default function Home() {
               borderRadius: '50%',
             }}
           />
-          
+
           {/* Indicateurs de position (points en bas) */}
           <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex gap-3">
             {immersiveImages.map((_, index) => (
@@ -1360,16 +1352,15 @@ export default function Home() {
                     setCurrentImmersiveIndex((prev) => (prev + 1) % immersiveImages.length);
                   }, 11000);
                 }}
-                className={`h-2 rounded-full transition-all duration-500 ${
-                  index === currentImmersiveIndex 
-                    ? 'w-8 bg-violet-electric' 
+                className={`h-2 rounded-full transition-all duration-500 ${index === currentImmersiveIndex
+                    ? 'w-8 bg-violet-electric'
                     : 'w-2 bg-white/40 hover:bg-white/60'
-                }`}
+                  }`}
                 aria-label={`Voir ${immersiveImages[index].name}`}
               />
             ))}
           </div>
-          
+
           {/* Call-to-action subtil au centre (optionnel - peut être retiré pour plus de minimalisme) */}
           <motion.div
             className="absolute bottom-20 left-1/2 -translate-x-1/2 z-30 text-center"
@@ -1398,7 +1389,7 @@ export default function Home() {
           <h2 className="text-4xl font-bold text-center mb-16 text-black-deep">
             Ce que disent nos clients
           </h2>
-          
+
           {/* Défilement continu des témoignages */}
           <div className="relative">
             <Marquee
@@ -1430,7 +1421,7 @@ export default function Home() {
                             </p>
                           </div>
                         </div>
-                        
+
                         {/* Étoiles */}
                         <div className="flex gap-1 mb-4">
                           {[...Array(testimonial.rating)].map((_, j) => (
@@ -1443,12 +1434,12 @@ export default function Home() {
                             </svg>
                           ))}
                         </div>
-                        
+
                         {/* Commentaire */}
                         <p className="text-gray-700 mb-6 italic text-base leading-relaxed flex-1">
                           &quot;{testimonial.text}&quot;
                         </p>
-                        
+
                         {/* Date */}
                         <div className="pt-4 border-t border-gray-200">
                           <p className="text-sm text-gray-500">
@@ -1502,7 +1493,7 @@ export default function Home() {
         {/* Gradient continu qui couvre les deux sections */}
         <div className="absolute inset-0 bg-gradient-to-b from-violet-900 via-purple-900 to-indigo-950">
           {/* Effet de grain/texture */}
-          <div 
+          <div
             className="absolute inset-0 opacity-20"
             style={{
               backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='4' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
@@ -1519,7 +1510,7 @@ export default function Home() {
             <h2 className="text-4xl font-bold text-center mb-16 text-white">
               Questions Fréquentes
             </h2>
-            
+
             <div className="space-y-4">
               {faqItems.map((item, index) => (
                 <Disclosure key={index} as="div" className="bg-white/10 backdrop-blur-md rounded-2xl shadow-xl border border-white/20">
@@ -1554,7 +1545,7 @@ export default function Home() {
                 </Disclosure>
               ))}
             </div>
-            
+
             {/* Contact additionnel */}
             <div className="mt-12 text-center">
               <p className="text-white/80 mb-4">
@@ -1644,13 +1635,13 @@ function NewsletterForm() {
     // Simulation d'envoi (à remplacer par un appel API réel)
     try {
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
       // Ici vous devriez appeler votre API pour enregistrer l'email
       // await fetch('/api/newsletter', { method: 'POST', body: JSON.stringify({ email }) });
-      
+
       setIsSuccess(true);
       setEmail('');
-      
+
       // Réinitialiser le message de succès après 5 secondes
       setTimeout(() => {
         setIsSuccess(false);
@@ -1685,7 +1676,7 @@ function NewsletterForm() {
           {isSubmitting ? 'Envoi...' : 'S\'inscrire'}
         </Button>
       </div>
-      
+
       {error && (
         <motion.div
           initial={{ opacity: 0, y: -10 }}
@@ -1695,7 +1686,7 @@ function NewsletterForm() {
           {error}
         </motion.div>
       )}
-      
+
       {isSuccess && (
         <motion.div
           initial={{ opacity: 0, y: -10 }}
@@ -1710,7 +1701,7 @@ function NewsletterForm() {
           </span>
         </motion.div>
       )}
-      
+
       <p className="mt-4 text-center text-sm text-white/70">
         En vous inscrivant, vous acceptez notre{' '}
         <Link href="/privacy" className="text-white hover:underline font-medium">
