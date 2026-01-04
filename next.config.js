@@ -14,7 +14,7 @@ const nextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 60,
     // Désactiver l'optimisation statique pour développement (plus rapide)
-    unoptimized: process.env.NODE_ENV === 'development',
+    unoptimized: true,
   },
   // Optimisations de production
   compress: true,
