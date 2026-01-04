@@ -13,20 +13,22 @@ async function testConnection() {
     console.log('✅ Connexion réussie\n');
 
     // Test 2: Vérifier que l'utilisateur admin existe
+    const adminEmail = process.env.ADMIN_EMAIL || 'admin@ejsmarket.com';
     console.log('2️⃣ Vérification de l\'utilisateur admin...');
     const admin = await prisma.users.findUnique({
-      where: { email: 'admin@ejsmarket.com' },
+      where: { email: adminEmail },
     });
 
     if (!admin) {
       console.log('❌ Utilisateur admin introuvable');
       console.log('💡 Création de l\'utilisateur admin...');
 
-      const passwordHash = await bcrypt.hash('Admin123!', 12);
+      const adminPassword = process.env.ADMIN_PASSWORD || 'Admin123!';
+      const passwordHash = await bcrypt.hash(adminPassword, 12);
       const newAdmin = await prisma.users.create({
         data: {
           id: crypto.randomUUID(),
-          email: 'admin@ejsmarket.com',
+          email: adminEmail,
           passwordHash,
           name: 'Administrateur',
           role: 'ADMIN',
@@ -45,7 +47,7 @@ async function testConnection() {
 
       // Test 3: Vérifier le mot de passe
       console.log('\n3️⃣ Test du mot de passe...');
-      const testPassword = 'Admin123!';
+      const testPassword = process.env.ADMIN_PASSWORD || 'Admin123!';
       const isPasswordValid = await bcrypt.compare(testPassword, admin.passwordHash || "");
 
       if (isPasswordValid) {
@@ -57,7 +59,7 @@ async function testConnection() {
 
         const newPasswordHash = await bcrypt.hash(testPassword, 12);
         await prisma.users.update({
-          where: { email: 'admin@ejsmarket.com' },
+          where: { email: adminEmail },
           data: { passwordHash: newPasswordHash },
         });
         console.log('✅ Mot de passe réinitialisé');
@@ -72,8 +74,8 @@ async function testConnection() {
 
     console.log('\n✅ Tous les tests sont passés !');
     console.log('\n📋 Identifiants de connexion :');
-    console.log('   Email: admin@ejsmarket.com');
-    console.log('   Mot de passe: Admin123!');
+    console.log(`   Email: ${adminEmail}`);
+    console.log('   Mot de passe: ******** (masqué)');
 
   } catch (error) {
     console.error('\n❌ Erreur lors du test:', error);

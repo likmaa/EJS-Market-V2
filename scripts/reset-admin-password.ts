@@ -5,12 +5,18 @@ const prisma = new PrismaClient();
 
 async function resetAdminPassword() {
   try {
-    const adminEmail = 'admin@ejsmarket.com';
-    const newPassword = 'Admin123!';
+    const adminEmail = process.env.ADMIN_EMAIL;
+    const newPassword = process.env.ADMIN_PASSWORD;
+
+    if (!adminEmail || !newPassword) {
+      console.error('❌ Erreur : ADMIN_EMAIL ou ADMIN_PASSWORD non définis dans l\'environnement.');
+      console.log('💡 Assurez-vous d\'avoir ces variables dans votre fichier .env.local');
+      process.exit(1);
+    }
 
     console.log('🔐 Réinitialisation du mot de passe admin...\n');
     console.log('📧 Email:', adminEmail);
-    console.log('🔑 Nouveau mot de passe:', newPassword);
+    console.log('🔑 Nouveau mot de passe: ******** (masqué pour la sécurité)');
     console.log('');
 
     // Vérifier si l'utilisateur existe

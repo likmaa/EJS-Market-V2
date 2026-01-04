@@ -5,9 +5,15 @@ const prisma = new PrismaClient();
 
 async function createManager() {
   try {
-    const email = process.env.MANAGER_EMAIL || 'manager@ejmarket.com';
-    const password = process.env.MANAGER_PASSWORD || 'Manager123!';
-    const name = process.env.MANAGER_NAME || 'Gestionnaire Test';
+    const email = process.env.MANAGER_EMAIL;
+    const password = process.env.MANAGER_PASSWORD;
+    const name = process.env.MANAGER_NAME || 'Gestionnaire';
+
+    if (!email || !password) {
+      console.error('❌ Erreur : MANAGER_EMAIL ou MANAGER_PASSWORD non définis dans l\'environnement.');
+      console.log('💡 Assurez-vous d\'avoir ces variables dans votre fichier .env.local');
+      process.exit(1);
+    }
 
     console.log('🔐 Création d\'un utilisateur MANAGER...\n');
 
@@ -19,7 +25,7 @@ async function createManager() {
     if (existingUser) {
       console.log(`⚠️  L'utilisateur ${email} existe déjà.`);
       console.log('   Rôle actuel:', existingUser.role);
-      
+
       if (existingUser.role === 'MANAGER') {
         console.log('✅ L\'utilisateur est déjà un MANAGER.');
         console.log('\n📧 Email:', email);

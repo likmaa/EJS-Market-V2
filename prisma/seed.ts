@@ -12,8 +12,8 @@ async function main() {
   console.log('🌱 Seeding database...');
 
   // Créer un utilisateur admin par défaut
-  const adminEmail = 'admin@ejsmarket.com';
-  const adminPassword = 'Admin123!';
+  const adminEmail = process.env.ADMIN_EMAIL || 'admin@ejsmarket.com';
+  const adminPassword = process.env.ADMIN_PASSWORD || 'Admin123!';
   const adminPasswordHash = await bcrypt.hash(adminPassword, 12);
 
   const admin = await prisma.users.upsert({
@@ -78,7 +78,7 @@ async function main() {
     const existing = await prisma.shipping_zones.findFirst({
       where: { name: zone.name },
     });
-    
+
     if (!existing) {
       await prisma.shipping_zones.create({
         data: {
