@@ -1,8 +1,7 @@
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
-import { prisma } from '@/lib/prisma';
+import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
-import { UserRole } from '@prisma/client';
 
 export const authOptions = {
   providers: [
@@ -18,13 +17,13 @@ export const authOptions = {
           return null;
         }
 
+        const prisma = new PrismaClient();
         try {
-          console.log('[NextAuth] Tentative de connexion pour:', credentials.email);
+          console.log('[NextAuth] Tentative login:', credentials.email);
+          await prisma.$connect();
 
           const user = await prisma.users.findUnique({
-            where: {
-              email: credentials.email as string,
-            },
+            where: { email: credentials.email as string },
           });
 
           if (!user) {
@@ -32,10 +31,8 @@ export const authOptions = {
             return null;
           }
 
-          console.log('[NextAuth] Utilisateur trouvé:', user.email, 'Rôle:', user.role);
-
           if (!user.passwordHash) {
-            console.error('[NextAuth] L\'utilisateur n\'a pas de mot de passe défini:', credentials.email);
+            console.error('[NextAuth] Pas de mot de passe défini:', user.email);
             return null;
           }
 
@@ -45,52 +42,51 @@ export const authOptions = {
           );
 
           if (!isPasswordValid) {
-            console.error('[NextAuth] Mot de passe invalide pour:', credentials.email);
+            console.error('[NextAuth] Mot de passe invalide pour:', user.email);
             return null;
           }
 
-          console.log('[NextAuth] Authentification réussie pour:', credentials.email);
+          console.log('[NextAuth] Login réussi:', user.email);
           return {
             id: user.id,
             email: user.email,
             name: user.name,
             role: user.role,
           };
-        } catch (error) {
-          console.error('[NextAuth] Erreur lors de l\'authentification:', error);
-          if (error instanceof Error) {
-            console.error('[NextAuth] Message d\'erreur:', error.message);
-            console.error('[NextAuth] Stack:', error.stack);
-          }
+        } catch (error: any) {
+          console.error('[NextAuth] ERREUR FATALE:', error.message);
           return null;
+        } finally {
+          await prisma.$disconnect();
         }
       },
     }),
   ],
   session: {
-    strategy: 'jwt',
+    strategy: 'jwt' as const,
   },
   callbacks: {
     async jwt({ token, user }: any) {
       if (user) {
-        token.role = (user as any).role;
+        token.role = user.role;
         token.id = user.id;
       }
       return token;
     },
     async session({ session, token }: any) {
       if (session.user) {
-        session.user.role = token.role as UserRole;
-        session.user.id = token.id as string;
+        session.user.role = token.role;
+        session.user.id = token.id;
       }
       return session;
     },
     async redirect({ url, baseUrl }: any) {
-      // Si l'URL de redirection est relative, la rendre absolue
       if (url.startsWith('/')) return `${baseUrl}${url}`;
-      // Si l'URL est sur le même domaine, l'utiliser
-      if (new URL(url).origin === baseUrl) return url;
-      // Sinon, rediriger vers la base
+      try {
+        if (new URL(url).origin === baseUrl) return url;
+      } catch (e) {
+        // Fallback si URL invalide
+      }
       return baseUrl;
     },
   },
@@ -98,14 +94,9 @@ export const authOptions = {
     signIn: '/login',
     error: '/login',
   },
-  secret: process.env.NEXTAUTH_SECRET,
-  debug: process.env.NODE_ENV === 'development',
+  secret: process.env.NEXT_AUTH_SECRET || process.env.NEXTAUTH_SECRET || process.env.AUTH_SECRET,
+  trustHost: true,
+  debug: true, // Activé temporairement pour voir les logs dans Coolify
 };
 
-console.log('[NextAuth] Initializing with secret present:', !!process.env.NEXTAUTH_SECRET);
-if (!process.env.NEXTAUTH_SECRET) {
-  console.warn('[NextAuth] WARNING: NEXTAUTH_SECRET is not defined!');
-}
-
 export const { handlers, signIn, signOut, auth } = NextAuth(authOptions as any);
-
