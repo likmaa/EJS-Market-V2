@@ -7,20 +7,27 @@ const DEFAULT_TEXT =
   'Livraison Gratuite en Europe dès 100€ ⚡️ Nouveaux Robots Husqvarna en stock ⚡️ -10% sur Apple avec le code EJS10 ⚡️';
 
 export async function GET() {
+  await prisma.$connect().catch(() => { });
   try {
     const settings = await prisma.site_settings.findUnique({
       where: { id: 'global' },
     });
 
-    return NextResponse.json({
+    return new Response(JSON.stringify({
       newsBarText: settings?.newsBarText || DEFAULT_TEXT,
+    }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error('[NewsBar] Erreur lors du chargement des paramètres:', error);
-    return NextResponse.json(
-      { newsBarText: DEFAULT_TEXT },
-      { status: 200 },
-    );
+    return new Response(JSON.stringify({
+      newsBarText: DEFAULT_TEXT,
+      error: error.message
+    }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' }
+    });
   }
 }
 

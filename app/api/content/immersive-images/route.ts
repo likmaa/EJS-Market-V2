@@ -5,6 +5,7 @@ export const dynamic = 'force-dynamic';
 
 // GET - Liste publique des images immersives actives
 export async function GET() {
+  await prisma.$connect().catch(() => { });
   try {
     const images = await prisma.immersive_images.findMany({
       where: { isActive: true },
@@ -20,20 +21,17 @@ export async function GET() {
       orderBy: [{ order: 'asc' }, { createdAt: 'desc' }],
     });
 
-    return NextResponse.json(
-      { images },
-      {
-        headers: {
-          'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
-        },
-      }
-    );
-  } catch (error) {
+    return new Response(JSON.stringify({ images }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }
+    });
+  } catch (error: any) {
     console.error('Erreur lors de la récupération des images immersives:', error);
-    return NextResponse.json(
-      { error: 'Erreur serveur' },
-      { status: 500 }
-    );
+    return new Response(JSON.stringify({
+      error: 'Erreur serveur',
+      message: error.message,
+      code: error.code
+    }), { status: 500, headers: { 'Content-Type': 'application/json' } });
   }
 }
 
