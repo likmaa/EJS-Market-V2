@@ -1,48 +1,34 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { NextRequest } from 'next/server';
+import { PrismaClient } from '@prisma/client';
 
 export const dynamic = 'force-dynamic';
 
-// GET - Liste publique des images hero actives
 export async function GET(request: NextRequest) {
-  await prisma.$connect().catch(() => { });
+  const prisma = new PrismaClient();
   try {
     const { searchParams } = new URL(request.url);
-    const type = searchParams.get('type'); // "tech" ou "garden"
+    const type = searchParams.get('type');
 
     const where: any = { isActive: true };
-    if (type) {
-      where.type = type;
-    }
+    if (type) where.type = type;
 
+    await prisma.$connect();
     const images = await prisma.hero_images.findMany({
       where,
-      select: {
-        id: true,
-        type: true,
-        name: true,
-        mediaType: true,
-        imageUrl: true,
-        videoUrl: true,
-        thumbnailUrl: true,
-        price: true,
-        available: true,
-        order: true,
-      },
       orderBy: [{ order: 'asc' }, { createdAt: 'desc' }],
     });
 
     return new Response(JSON.stringify({ images }), {
       status: 200,
-      headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }
+      headers: { 'Content-Type': 'application/json' }
     });
-  } catch (error: any) {
-    console.error('Erreur lors de la récupération des images hero:', error);
-    return new Response(JSON.stringify({
-      error: 'Erreur serveur',
-      message: error.message,
-      code: error.code
-    }), { status: 500, headers: { 'Content-Type': 'application/json' } });
+  } catch (err: any) {
+    console.error('API ERROR [Hero]:', err);
+    return new Response(`CRITICAL ERROR: ${err.message}\nCODE: ${err.code}\nSTACK: ${err.stack}`, {
+      status: 500,
+      headers: { 'Content-Type': 'text/plain' }
+    });
+  } finally {
+    await prisma.$disconnect();
   }
 }
-

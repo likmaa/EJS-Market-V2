@@ -1,37 +1,27 @@
-import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { PrismaClient } from '@prisma/client';
 
 export const dynamic = 'force-dynamic';
 
-// GET - Liste publique des partenaires actifs
 export async function GET() {
-  await prisma.$connect().catch(() => { });
+  const prisma = new PrismaClient();
   try {
+    await prisma.$connect();
     const partners = await prisma.partners.findMany({
       where: { isActive: true },
-      select: {
-        id: true,
-        name: true,
-        logoPath: true,
-        cdnUrl: true,
-        width: true,
-        height: true,
-        alt: true,
-        order: true,
-      },
       orderBy: [{ order: 'asc' }, { createdAt: 'desc' }],
     });
 
     return new Response(JSON.stringify({ partners }), {
       status: 200,
-      headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }
+      headers: { 'Content-Type': 'application/json' }
     });
-  } catch (error: any) {
-    console.error('Erreur lors de la récupération des partenaires:', error);
-    return new Response(JSON.stringify({
-      error: 'Erreur serveur',
-      message: error.message,
-      code: error.code
-    }), { status: 500, headers: { 'Content-Type': 'application/json' } });
+  } catch (err: any) {
+    console.error('API ERROR [Partners]:', err);
+    return new Response(`CRITICAL ERROR: ${err.message}\nCODE: ${err.code}\nSTACK: ${err.stack}`, {
+      status: 500,
+      headers: { 'Content-Type': 'text/plain' }
+    });
+  } finally {
+    await prisma.$disconnect();
   }
 }
