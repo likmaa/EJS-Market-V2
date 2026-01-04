@@ -29,10 +29,14 @@ export async function GET() {
         },
       }
     );
-  } catch (error) {
+  } catch (error: any) {
     console.error('Erreur lors de la récupération des témoignages:', error);
     return NextResponse.json(
-      { error: 'Erreur serveur' },
+      {
+        error: 'Erreur serveur',
+        message: error.message,
+        code: error.code
+      },
       { status: 500 }
     );
   }

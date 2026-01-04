@@ -29,12 +29,15 @@ export async function GET() {
         },
       }
     );
-  } catch (error) {
-    console.error('Erreur lors de la récupération des partenaires:', error);
+  } catch (error: any) {
+    console.error('Erreur lors de la récupération des images hero:', error);
     return NextResponse.json(
-      { error: 'Erreur serveur' },
+      {
+        error: 'Erreur serveur',
+        message: error.message,
+        code: error.code
+      },
       { status: 500 }
     );
   }
 }
-
