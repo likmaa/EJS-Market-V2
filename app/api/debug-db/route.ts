@@ -16,6 +16,10 @@ export async function GET() {
         const immersiveCount = await prisma.immersive_images.count();
         const settingsCount = await prisma.site_settings.count();
 
+        const sampleTestimonial = await prisma.testimonials.findFirst();
+        const samplePartner = await prisma.partners.findFirst();
+        const sampleHero = await prisma.hero_images.findFirst();
+
         return NextResponse.json({
             status: 'success',
             message: 'Connected to database!',
@@ -26,6 +30,11 @@ export async function GET() {
                 hero_images: heroCount,
                 immersive_images: immersiveCount,
                 site_settings: settingsCount,
+            },
+            samples: {
+                testimonial: sampleTestimonial,
+                partner: samplePartner,
+                hero: sampleHero,
             },
             env: {
                 DATABASE_URL_SET: !!process.env.DATABASE_URL,
