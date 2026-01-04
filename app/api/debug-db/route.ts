@@ -22,6 +22,7 @@ export async function GET() {
 
         return NextResponse.json({
             status: 'success',
+            version: '2026-01-04-V4-LOGS',
             message: 'Connected to database!',
             counts: {
                 users: userCount,
