@@ -10,15 +10,25 @@ export async function GET() {
         await prisma.$connect();
 
         const userCount = await prisma.users.count();
+        const testimonialsCount = await prisma.testimonials.count();
+        const partnersCount = await prisma.partners.count();
+        const heroCount = await prisma.hero_images.count();
+        const immersiveCount = await prisma.immersive_images.count();
+        const settingsCount = await prisma.site_settings.count();
 
         return NextResponse.json({
             status: 'success',
             message: 'Connected to database!',
-            database: 'Neon/PostgreSQL',
-            userCount,
+            counts: {
+                users: userCount,
+                testimonials: testimonialsCount,
+                partners: partnersCount,
+                hero_images: heroCount,
+                immersive_images: immersiveCount,
+                site_settings: settingsCount,
+            },
             env: {
                 DATABASE_URL_SET: !!process.env.DATABASE_URL,
-                DATABASE_URL_LENGTH: process.env.DATABASE_URL?.length || 0,
                 NODE_ENV: process.env.NODE_ENV,
             }
         });
