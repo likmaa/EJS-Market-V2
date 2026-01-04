@@ -124,8 +124,8 @@ Dans l'onglet **Environment Variables**, ajouter :
 - [x] Headers de sécurité configurés (`next.config.js`)
 - [x] Validation Zod sur les inputs
 - [x] NextAuth configuré avec secret fort
-- [ ] **À vérifier** : HTTPS activé (automatique sur Vercel)
-- [ ] **À vérifier** : Variables sensibles dans Vercel (pas dans le code)
+- [ ] **À vérifier** : HTTPS activé (automatique sur Coolify / Traefik)
+- [ ] **À vérifier** : Variables sensibles dans Coolify (pas dans le code)
 - [ ] **À vérifier** : Rate limiting configuré (si nécessaire)
 
 ---
@@ -133,36 +133,26 @@ Dans l'onglet **Environment Variables**, ajouter :
 ## 📊 Monitoring & Analytics
 
 ### À Configurer (Optionnel)
-- [ ] Vercel Analytics activé
-- [ ] Google Analytics 4 (si nécessaire)
-- [ ] Sentry pour le monitoring d'erreurs (si nécessaire)
-- [ ] Logs Vercel configurés
+- [ ] Logs Coolify configurés
 
 ---
 
 ## 🚨 En Cas de Problème
 
 ### Build Échoue
-1. Vérifier les logs Vercel
+1. Vérifier les logs Coolify
 2. Tester le build localement : `npm run build`
 3. Vérifier les variables d'environnement
 4. Vérifier la connexion à la base de données
 
 ### Erreurs Runtime
-1. Vérifier les logs Vercel
+1. Vérifier les logs Coolify
 2. Vérifier la console navigateur
 3. Vérifier la connexion à la base de données
 4. Vérifier les variables d'environnement
 
 ### Base de Données
-- Voir [`docs/VERIFIER_DATABASE_URL_VERCEL.md`](./docs/VERIFIER_DATABASE_URL_VERCEL.md)
-- Voir [`docs/CONNECTION_STRINGS_NEON.md`](./docs/CONNECTION_STRINGS_NEON.md)
-
----
-
-## 📚 Documentation Référence
-
-- **Déploiement Vercel** : [`docs/VERCEL.md`](./docs/VERCEL.md)
+- **Déploiement Coolify** : [`docs/DEPLOIEMENT.md`](./docs/DEPLOIEMENT.md)
 - **Configuration GitHub** : [`docs/INSTRUCTIONS_GITHUB.md`](./docs/INSTRUCTIONS_GITHUB.md)
 - **Base de données** : [`docs/SETUP_DATABASE.md`](./docs/SETUP_DATABASE.md)
 - **Authentification** : [`docs/AUTHENTICATION.md`](./docs/AUTHENTICATION.md)

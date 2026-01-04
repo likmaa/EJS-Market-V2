@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
+import Image from 'next/image';
 
 interface OrderItem {
   id: string;
@@ -282,9 +283,11 @@ export default function OrderDetailPage() {
                       className="flex items-center gap-4 p-4 rounded-lg bg-gray-50"
                     >
                       <div className="relative w-16 h-16 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0">
-                        <img
+                        <Image
                           src={image}
                           alt={productName}
+                          width={64}
+                          height={64}
                           className="w-full h-full object-cover"
                         />
                       </div>

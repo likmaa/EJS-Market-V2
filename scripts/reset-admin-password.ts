@@ -7,7 +7,7 @@ async function resetAdminPassword() {
   try {
     const adminEmail = 'admin@ejsmarket.com';
     const newPassword = 'Admin123!';
-    
+
     console.log('🔐 Réinitialisation du mot de passe admin...\n');
     console.log('📧 Email:', adminEmail);
     console.log('🔑 Nouveau mot de passe:', newPassword);
@@ -20,10 +20,10 @@ async function resetAdminPassword() {
 
     if (!existingUser) {
       console.log('⚠️  L\'utilisateur admin n\'existe pas. Création...\n');
-      
+
       // Hasher le mot de passe
       const passwordHash = await bcrypt.hash(newPassword, 12);
-      
+
       // Créer l'utilisateur admin
       const admin = await prisma.users.create({
         data: {
@@ -36,7 +36,7 @@ async function resetAdminPassword() {
           updatedAt: new Date(),
         },
       });
-      
+
       console.log('✅ Utilisateur admin créé avec succès !\n');
       console.log('📋 Informations de connexion :');
       console.log('   📧 Email:', adminEmail);
@@ -45,10 +45,10 @@ async function resetAdminPassword() {
       console.log('   🎭 Rôle:', admin.role);
     } else {
       console.log('✅ Utilisateur admin trouvé. Mise à jour du mot de passe...\n');
-      
+
       // Hasher le nouveau mot de passe
       const passwordHash = await bcrypt.hash(newPassword, 12);
-      
+
       // Mettre à jour le mot de passe
       const updatedUser = await prisma.users.update({
         where: { email: adminEmail },
@@ -59,7 +59,7 @@ async function resetAdminPassword() {
           isEmailVerified: true,
         },
       });
-      
+
       console.log('✅ Mot de passe admin réinitialisé avec succès !\n');
       console.log('📋 Informations de connexion :');
       console.log('   📧 Email:', adminEmail);
@@ -67,9 +67,9 @@ async function resetAdminPassword() {
       console.log('   🆔 ID:', updatedUser.id);
       console.log('   🎭 Rôle:', updatedUser.role);
     }
-    
+
     console.log('\n💡 Vous pouvez maintenant vous connecter avec ces identifiants.');
-    console.log('   URL: https://votre-projet.vercel.app/login');
+    console.log('   URL: https://ejs.ticmiton.com/login');
     console.log('\n⚠️  Note: Changez le mot de passe après la première connexion !');
 
   } catch (error) {

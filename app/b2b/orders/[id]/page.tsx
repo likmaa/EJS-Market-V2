@@ -4,6 +4,7 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
+import Image from 'next/image';
 
 // Données mockées - à remplacer par des appels API
 const mockOrder = {
@@ -96,9 +97,8 @@ export default function B2BOrderDetailPage() {
         </div>
         <div className="flex items-center gap-3">
           <span
-            className={`inline-flex px-3 py-1 text-sm font-semibold rounded-full ${
-              statusColors[order.status as keyof typeof statusColors]
-            }`}
+            className={`inline-flex px-3 py-1 text-sm font-semibold rounded-full ${statusColors[order.status as keyof typeof statusColors]
+              }`}
           >
             {statusLabels[order.status as keyof typeof statusLabels]}
           </span>
@@ -121,9 +121,11 @@ export default function B2BOrderDetailPage() {
                     className="flex items-center gap-4 p-4 rounded-lg bg-gray-50"
                   >
                     <div className="relative w-16 h-16 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0">
-                      <img
+                      <Image
                         src={item.image}
                         alt={item.name}
+                        width={64}
+                        height={64}
                         className="w-full h-full object-cover"
                       />
                     </div>

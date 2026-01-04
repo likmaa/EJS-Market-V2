@@ -17,14 +17,32 @@ const plusJakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Electrónica & Jardín Store Europe",
-  description: "Plateforme E-commerce multi-produits pour l'Europe",
+  metadataBase: new URL("https://ejs.ticmiton.com"),
+  title: {
+    default: "Electronica & Jardín Store Europe | High-Tech & Jardinage",
+    template: "%s | EJS Market"
+  },
+  description: "Plateforme E-commerce leader en Europe. Découvrez notre sélection High-tech, matériel de jardinage et électronique de haute qualité.",
+  keywords: ["e-commerce", "high-tech", "jardinage", "électronique", "europe", "EJS Market"],
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "eJS MARKET",
+    title: "EJS Market",
   },
+  openGraph: {
+    type: "website",
+    locale: "fr_FR",
+    url: "https://ejs.ticmiton.com",
+    siteName: "EJS Market",
+    title: "EJS Market - High-Tech & Jardinage en Europe",
+    description: "Le meilleur de l'électronique et du jardinage livré chez vous en Europe.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "EJS Market - High-Tech & Jardinage",
+    description: "Découvrez notre boutique multi-produits pour l'Europe.",
+  }
 };
 
 export const viewport: Viewport = {

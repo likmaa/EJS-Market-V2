@@ -22,15 +22,15 @@ npm install
 
 ### 2. Configurer la base de données
 
-#### Option A : Supabase (Recommandé)
+#### Option A : Neon (Recommandé)
 
-1. Créer un compte sur [supabase.com](https://supabase.com)
-2. Créer un nouveau projet
-3. Récupérer l'URL de connexion PostgreSQL
+1. Créer un compte sur [neon.tech](https://neon.tech)
+2. Créer un nouveau projet PostgreSQL
+3. Copier la **Connection String** (en mode "Pooled" pour la prod)
 4. Créer un fichier `.env.local` :
 
 ```bash
-DATABASE_URL="postgresql://postgres:[PASSWORD]@db.[PROJECT].supabase.co:5432/postgres"
+DATABASE_URL="postgresql://[USER]:[PASSWORD]@[HOST]/neondb?sslmode=require"
 ```
 
 
