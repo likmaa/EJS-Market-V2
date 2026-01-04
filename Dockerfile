@@ -3,9 +3,9 @@ FROM node:20-alpine AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Install dependencies
+# Install all dependencies (including devDependencies for build)
 COPY package.json package-lock.json* ./
-RUN npm ci
+RUN npm ci --include=dev
 
 # Stage 2: Builder
 FROM node:20-alpine AS builder
@@ -37,7 +37,7 @@ COPY --from=builder /app/public ./public
 RUN mkdir .next
 RUN chown nextjs:nodejs .next
 
-# Standalone output output
+# Standalone output
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
