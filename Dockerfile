@@ -1,6 +1,7 @@
 # Stage 1: Dependencies
 FROM node:20-alpine AS deps
-RUN apk add --no-cache libc6-compat
+# Install dependencies for Prisma and Node.js on Alpine
+RUN apk add --no-cache libc6-compat openssl
 WORKDIR /app
 
 # Install all dependencies
@@ -9,6 +10,8 @@ RUN npm ci --include=dev
 
 # Stage 2: Builder
 FROM node:20-alpine AS builder
+# Install openssl for prisma generate
+RUN apk add --no-cache openssl
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
@@ -23,6 +26,8 @@ RUN npm run build
 
 # Stage 3: Runner
 FROM node:20-alpine AS runner
+# Install openssl for runtime prisma commands
+RUN apk add --no-cache openssl
 WORKDIR /app
 
 ENV NODE_ENV=production
@@ -51,9 +56,5 @@ EXPOSE 3000
 
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
-
-# Note: standalone server.js doesn't use the regular node_modules, 
-# but for npx prisma we might need them or the binaries.
-# The standalone output includes necessary pieces under node_modules inside standalone.
 
 CMD ["node", "server.js"]
