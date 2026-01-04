@@ -4,6 +4,8 @@ import { useEffect } from 'react';
 
 export function ServiceWorkerRegistration() {
   useEffect(() => {
+    // Service worker désactivé temporairement pour résoudre les conflits en production
+    /*
     if (
       typeof window !== 'undefined' &&
       'serviceWorker' in navigator &&
@@ -18,6 +20,7 @@ export function ServiceWorkerRegistration() {
           console.log('Échec de l\'enregistrement du Service Worker:', error);
         });
     }
+    */
   }, []);
 
   return null;

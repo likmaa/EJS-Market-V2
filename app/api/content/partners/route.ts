@@ -30,7 +30,7 @@ export async function GET() {
       }
     );
   } catch (error: any) {
-    console.error('Erreur lors de la récupération des images hero:', error);
+    console.error('Erreur lors de la récupération des partenaires:', error);
     return NextResponse.json(
       {
         error: 'Erreur serveur',

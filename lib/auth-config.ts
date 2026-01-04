@@ -99,7 +99,13 @@ export const authOptions = {
     error: '/login',
   },
   secret: process.env.NEXTAUTH_SECRET,
+  debug: process.env.NODE_ENV === 'development',
 };
+
+console.log('[NextAuth] Initializing with secret present:', !!process.env.NEXTAUTH_SECRET);
+if (!process.env.NEXTAUTH_SECRET) {
+  console.warn('[NextAuth] WARNING: NEXTAUTH_SECRET is not defined!');
+}
 
 export const { handlers, signIn, signOut, auth } = NextAuth(authOptions as any);
 
