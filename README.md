@@ -9,7 +9,7 @@ Plateforme E-commerce multi-produits (High-tech + Jardinage) pour le marché eur
 - **Authentification** : NextAuth.js
 - **Paiements** : Carte de crédit / Virement bancaire
 - **Recherche** : Algolia
-- **Hébergement** : Vercel
+- **Hébergement** : Coolify (VPS) -> [ejs.ticmiton.com](https://ejs.ticmiton.com)
 
 ## 📦 Installation
 
@@ -57,7 +57,7 @@ Toute la documentation du projet est disponible dans le dossier [`docs/`](./docs
 
 ## 🔒 Sécurité
 
-- SSL/TLS automatique (Vercel)
+- SSL/TLS automatique (Coolify / Traefik)
 - Validation Zod sur tous les inputs
 - Protection CSRF/XSS intégrée
 - Paiement sécurisé par carte (conformité PCI DSS)

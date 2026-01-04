@@ -57,8 +57,6 @@ next-env.d.ts
 /public/uploads/*
 !/public/uploads/.gitkeep
 
-# Documentation (locale uniquement)
-/docs/
 .env.local
 .env
 .env.local

@@ -73,64 +73,48 @@ NEXT_PUBLIC_ALGOLIA_API_KEY="..."
 ALGOLIA_ADMIN_API_KEY="..."
 ```
 
-### 4. Déploiement Vercel
-
+### 4. Déploiement Coolify
 #### Étape 1 : Préparer le dépôt GitHub
 - [ ] Code poussé sur GitHub
-- [ ] Branche `main` ou `production` prête
+- [ ] Branche `main` prête (avec `Dockerfile`)
 
-#### Étape 2 : Créer le projet Vercel
-1. Aller sur [vercel.com](https://vercel.com)
-2. Se connecter avec GitHub
-3. Cliquer sur **"Add New Project"**
-4. Sélectionner le dépôt
-5. Configurer :
-   - **Framework Preset** : Next.js
-   - **Root Directory** : `./` (par défaut)
-   - **Build Command** : `npm run build` (par défaut)
-   - **Output Directory** : `.next` (par défaut)
+#### Étape 2 : Créer le projet dans Coolify
+1. Se connecter à votre instance Coolify
+2. Cliquer sur **"Sources"** et s'assurer que GitHub est lié
+3. Cliquer sur **"Projects"** -> **"Create New Project"** -> **"Production"**
+4. Cliquer sur **"Add New Application"** -> **"Public/Private Repository"**
+5. Sélectionner le dépôt `EJS-Market`
+6. Configurer :
+   - **Build Pack** : Dockerfile (automatiquement détecté)
+   - **Destination Port** : 3000
+   - **Domains** : `https://ejs.ticmiton.com`
 
 #### Étape 3 : Configurer les Variables d'Environnement
-Dans les **Settings** → **Environment Variables**, ajouter :
-
-1. `DATABASE_URL` (Production)
-2. `DATABASE_URL_UNPOOLED` (Production) - Optionnel
-3. `NEXTAUTH_URL` (Production) - URL de votre domaine
-4. `NEXTAUTH_SECRET` (Production) - Générer avec : `openssl rand -base64 32`
-5. `NODE_ENV` = `production` (Production)
+Dans l'onglet **Environment Variables**, ajouter :
+1. `DATABASE_URL` (PostgreSQL Neon)
+2. `NEXT_PUBLIC_APP_URL` = `https://ejs.ticmiton.com`
+3. `NEXTAUTH_URL` = `https://ejs.ticmiton.com`
+4. `NEXTAUTH_SECRET` = `openssl rand -base64 32`
+5. `NODE_ENV` = `production`
 
 #### Étape 4 : Déployer
 - [ ] Cliquer sur **"Deploy"**
-- [ ] Attendre la fin du build
-- [ ] Vérifier les logs de build
-- [ ] Tester l'application déployée
+- [ ] Attendre la fin du build Docker
+- [ ] Vérifier les logs dans Coolify
+- [ ] Tester l'application sur [ejs.ticmiton.com](https://ejs.ticmiton.com)
 
 ### 5. Post-Déploiement
-
 #### Initialisation Base de Données
-- [ ] Se connecter au terminal Vercel ou utiliser Prisma Studio
-- [ ] Exécuter les migrations :
-  ```bash
-  npx prisma migrate deploy
-  ```
-- [ ] Seed les données initiales :
-  ```bash
-  npm run db:seed
-  ```
+- [ ] Accéder au terminal de l'application dans Coolify ou localement
+- [ ] Exécuter les migrations : `npx prisma migrate deploy`
+- [ ] Seed les données initiales : `npm run db:seed`
 
 #### Vérifications
-- [ ] Site accessible sur l'URL Vercel
+- [ ] Site accessible sur [https://ejs.ticmiton.com](https://ejs.ticmiton.com)
 - [ ] Authentification fonctionne (login/register)
 - [ ] Base de données connectée
-- [ ] Pages principales chargent correctement
 - [ ] Images s'affichent
-- [ ] Pas d'erreurs dans la console navigateur
-- [ ] Pas d'erreurs dans les logs Vercel
-
-#### Configuration Domaine Personnalisé (Optionnel)
-- [ ] Ajouter un domaine personnalisé dans Vercel
-- [ ] Configurer les DNS
-- [ ] Mettre à jour `NEXTAUTH_URL` avec le nouveau domaine
+- [ ] SSL est actif (fourni par Traefik via Coolify)
 
 ---
 
