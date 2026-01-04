@@ -117,7 +117,7 @@ export function Footer() {
           <div className="lg:col-span-1">
             <Link href="/" className="flex items-center gap-2 mb-6">
               <Image
-                src="/logo.png"
+                src="/logo.webp"
                 alt="eJS MARKET"
                 width={120}
                 height={40}

@@ -43,21 +43,21 @@ const currentTestimonials = [
 ];
 
 const currentTechImages = [
-  { url: '/img1.jpg', name: 'iPhone 15 Pro Max', price: 1399, available: true },
-  { url: '/img2.jpg', name: 'MacBook Pro M3', price: 2499, available: true },
-  { url: '/img3.jpg', name: 'PlayStation 5', price: 499, available: false },
+  { url: '/img1.webp', name: 'iPhone 15 Pro Max', price: 1399, available: true },
+  { url: '/img2.webp', name: 'MacBook Pro M3', price: 2499, available: true },
+  { url: '/img3.webp', name: 'PlayStation 5', price: 499, available: false },
 ];
 
 const currentJardinImages = [
-  { url: '/jard1.jpg', name: 'Robot Tondeuse Automower 430X', price: 2499, available: true },
-  { url: '/jard2.jpg', name: 'Tondeuse Robot Gardena', price: 899, available: true },
-  { url: '/jard3.jpg', name: 'Tronçonneuse STIHL', price: 349, available: true },
+  { url: '/jard1.webp', name: 'Robot Tondeuse Automower 430X', price: 2499, available: true },
+  { url: '/jard2.webp', name: 'Tondeuse Robot Gardena', price: 899, available: true },
+  { url: '/jard3.webp', name: 'Tronçonneuse STIHL', price: 349, available: true },
 ];
 
 const currentImmersiveImages = [
-  { url: '/img1.jpg', name: 'iPhone 15 Pro Max' },
-  { url: '/img2.jpg', name: 'MacBook Pro M3' },
-  { url: '/img3.jpg', name: 'PlayStation 5' },
+  { url: '/img1.webp', name: 'iPhone 15 Pro Max' },
+  { url: '/img2.webp', name: 'MacBook Pro M3' },
+  { url: '/img3.webp', name: 'PlayStation 5' },
 ];
 
 export default function ImportContentPage() {

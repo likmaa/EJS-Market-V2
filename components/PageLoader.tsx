@@ -27,7 +27,7 @@ export function PageLoader({ isLoading }: PageLoaderProps) {
             >
               <div className="relative w-20 h-20">
                 <Image
-                  src="/logo.png"
+                  src="/logo.webp"
                   alt="eJS MARKET"
                   fill
                   className="object-contain"

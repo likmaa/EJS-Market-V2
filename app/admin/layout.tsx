@@ -121,7 +121,7 @@ export default function AdminLayout({
           <div className="flex h-16 items-center px-6 border-b border-gray-200">
             <Link href="/admin" className="flex items-center gap-2">
               <Image
-                src="/logo.png"
+                src="/logo.webp"
                 alt="eJS MARKET"
                 width={120}
                 height={40}

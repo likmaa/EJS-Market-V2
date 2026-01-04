@@ -409,14 +409,14 @@ export default function Home() {
         console.error('Erreur lors du chargement des images hero:', error);
         // Fallback sur les données statiques si l'API échoue
         setTechImages([
-          { id: '1', url: '/img1.jpg', name: 'iPhone 15 Pro Max', price: 1399, available: true, mediaType: 'image' as const, videoUrl: null, thumbnailUrl: null },
-          { id: '2', url: '/img2.jpg', name: 'MacBook Pro M3', price: 2499, available: true, mediaType: 'image' as const, videoUrl: null, thumbnailUrl: null },
-          { id: '3', url: '/img3.jpg', name: 'PlayStation 5', price: 499, available: false, mediaType: 'image' as const, videoUrl: null, thumbnailUrl: null },
+          { id: '1', url: '/img1.webp', name: 'iPhone 15 Pro Max', price: 1399, available: true, mediaType: 'image' as const, videoUrl: null, thumbnailUrl: null },
+          { id: '2', url: '/img2.webp', name: 'MacBook Pro M3', price: 2499, available: true, mediaType: 'image' as const, videoUrl: null, thumbnailUrl: null },
+          { id: '3', url: '/img3.webp', name: 'PlayStation 5', price: 499, available: false, mediaType: 'image' as const, videoUrl: null, thumbnailUrl: null },
         ]);
         setJardinImages([
-          { id: '1', url: '/jard1.jpg', name: 'Robot Tondeuse Automower 430X', price: 2499, available: true, mediaType: 'image' as const, videoUrl: null, thumbnailUrl: null },
-          { id: '2', url: '/jard2.jpg', name: 'Tondeuse Robot Gardena', price: 899, available: true, mediaType: 'image' as const, videoUrl: null, thumbnailUrl: null },
-          { id: '3', url: '/jard3.jpg', name: 'Tronçonneuse STIHL', price: 349, available: true, mediaType: 'image' as const, videoUrl: null, thumbnailUrl: null },
+          { id: '1', url: '/jard1.webp', name: 'Robot Tondeuse Automower 430X', price: 2499, available: true, mediaType: 'image' as const, videoUrl: null, thumbnailUrl: null },
+          { id: '2', url: '/jard2.webp', name: 'Tondeuse Robot Gardena', price: 899, available: true, mediaType: 'image' as const, videoUrl: null, thumbnailUrl: null },
+          { id: '3', url: '/jard3.webp', name: 'Tronçonneuse STIHL', price: 349, available: true, mediaType: 'image' as const, videoUrl: null, thumbnailUrl: null },
         ]);
       }
     };
@@ -446,9 +446,9 @@ export default function Home() {
         console.error('Erreur lors du chargement des images immersives:', error);
         // Fallback sur les données statiques
         setImmersiveImages([
-          { id: '1', url: '/img1.jpg', name: 'iPhone 15 Pro Max', mediaType: 'image' as const, videoUrl: null, thumbnailUrl: null },
-          { id: '2', url: '/img2.jpg', name: 'MacBook Pro M3', mediaType: 'image' as const, videoUrl: null, thumbnailUrl: null },
-          { id: '3', url: '/img3.jpg', name: 'PlayStation 5', mediaType: 'image' as const, videoUrl: null, thumbnailUrl: null },
+          { id: '1', url: '/img1.webp', name: 'iPhone 15 Pro Max', mediaType: 'image' as const, videoUrl: null, thumbnailUrl: null },
+          { id: '2', url: '/img2.webp', name: 'MacBook Pro M3', mediaType: 'image' as const, videoUrl: null, thumbnailUrl: null },
+          { id: '3', url: '/img3.webp', name: 'PlayStation 5', mediaType: 'image' as const, videoUrl: null, thumbnailUrl: null },
         ]);
       }
     };
@@ -1146,8 +1146,8 @@ export default function Home() {
                 { id: 3, name: 'Sony Alpha 7 IV', creator: 'Sony', category: 'Univers Tech', image: 'https://images.unsplash.com/photo-1606983340126-99ab4feaa64a?w=500', price: 2799 },
                 { id: 4, name: 'MacBook Pro M3', creator: 'Apple', category: 'Univers Tech', image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500', price: 1999 },
                 { id: 5, name: 'Robot Tondeuse Automower 430X', creator: 'Husqvarna', category: 'Univers Jardin', image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=500', price: 2499 },
-                { id: 6, name: 'Tondeuse Robot Gardena', creator: 'Gardena', category: 'Univers Jardin', image: '/jard2.jpg', price: 899 },
-                { id: 7, name: 'Tronçonneuse STIHL', creator: 'STIHL', category: 'Univers Jardin', image: '/jard3.jpg', price: 349 },
+                { id: 6, name: 'Tondeuse Robot Gardena', creator: 'Gardena', category: 'Univers Jardin', image: '/jard2.webp', price: 899 },
+                { id: 7, name: 'Tronçonneuse STIHL', creator: 'STIHL', category: 'Univers Jardin', image: '/jard3.webp', price: 349 },
                 { id: 8, name: 'Aspirateur Robot Roomba', creator: 'iRobot', category: 'Univers Jardin', image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500', price: 599 },
               ]}
               onViewProduct={(product) => {
@@ -1170,8 +1170,8 @@ export default function Home() {
               { id: 3, name: 'Sony Alpha 7 IV', creator: 'Sony', category: 'Univers Tech', image: 'https://images.unsplash.com/photo-1606983340126-99ab4feaa64a?w=500', price: 2799 },
               { id: 4, name: 'MacBook Pro M3', creator: 'Apple', category: 'Univers Tech', image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500', price: 1999 },
               { id: 5, name: 'Robot Tondeuse Automower 430X', creator: 'Husqvarna', category: 'Univers Jardin', image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=500', price: 2499 },
-              { id: 6, name: 'Tondeuse Robot Gardena', creator: 'Gardena', category: 'Univers Jardin', image: '/jard2.jpg', price: 899 },
-              { id: 7, name: 'Tronçonneuse STIHL', creator: 'STIHL', category: 'Univers Jardin', image: '/jard3.jpg', price: 349 },
+              { id: 6, name: 'Tondeuse Robot Gardena', creator: 'Gardena', category: 'Univers Jardin', image: '/jard2.webp', price: 899 },
+              { id: 7, name: 'Tronçonneuse STIHL', creator: 'STIHL', category: 'Univers Jardin', image: '/jard3.webp', price: 349 },
               { id: 8, name: 'Aspirateur Robot Roomba', creator: 'iRobot', category: 'Univers Jardin', image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500', price: 599 },
             ].map((product) => (
               <Card key={product.id} hover className="h-full bg-white rounded-lg border border-gray-200 overflow-hidden flex flex-col shadow-sm group">

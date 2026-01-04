@@ -32,7 +32,7 @@ export function MobileHeader() {
           {/* Logo à gauche */}
           <Link href="/" className="flex items-center flex-shrink-0">
             <Image
-              src="/logo.png"
+              src="/logo.webp"
               alt="eJS MARKET"
               width={120}
               height={40}

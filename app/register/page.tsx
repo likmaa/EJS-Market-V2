@@ -83,7 +83,7 @@ function RegisterForm() {
         <div className="text-center mb-8">
           <Link href="/" className="inline-block mb-4">
             <Image
-              src="/logo.png"
+              src="/logo.webp"
               alt="eJS MARKET"
               width={180}
               height={60}

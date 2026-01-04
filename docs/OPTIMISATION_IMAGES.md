@@ -3,12 +3,12 @@
 ## ⚠️ Problème Identifié
 
 Les images dans `/public` sont très lourdes :
-- `img1.jpg` : **12 Mo** ❌
-- `img2.jpg` : **5.2 Mo** ❌
-- `img3.jpg` : **4.1 Mo** ❌
-- `jard1.jpg` : **9.6 Mo** ❌
-- `jard2.jpg` : **11 Mo** ❌
-- `jard3.jpg` : **3.5 Mo** ❌
+- `img1.webp` : **12 Mo** ❌
+- `img2.webp` : **5.2 Mo** ❌
+- `img3.webp` : **4.1 Mo** ❌
+- `jard1.webp` : **9.6 Mo** ❌
+- `jard2.webp` : **11 Mo** ❌
+- `jard3.webp` : **3.5 Mo** ❌
 
 **Cible recommandée** : < 200 Ko par image pour le web !
 
@@ -48,7 +48,7 @@ const fs = require('fs');
 const path = require('path');
 
 const publicDir = path.join(__dirname, '../public');
-const images = ['img1.jpg', 'img2.jpg', 'img3.jpg', 'jard1.jpg', 'jard2.jpg', 'jard3.jpg'];
+const images = ['img1.webp', 'img2.webp', 'img3.webp', 'jard1.webp', 'jard2.webp', 'jard3.webp'];
 
 async function optimizeImage(filename) {
   const inputPath = path.join(publicDir, filename);
@@ -116,7 +116,7 @@ WebP offre une meilleure compression :
 brew install webp
 
 # Convertir une image
-cwebp -q 85 img1.jpg -o img1.webp
+cwebp -q 85 img1.webp -o img1.webp
 ```
 
 Puis mettre à jour le code pour utiliser `.webp` au lieu de `.jpg`.

@@ -34,7 +34,7 @@ export function Header() {
           {/* Logo - Left */}
           <Link href="/" className="flex items-center flex-shrink-0">
             <Image
-              src="/logo.png"
+              src="/logo.webp"
               alt="eJS MARKET"
               width={140}
               height={50}

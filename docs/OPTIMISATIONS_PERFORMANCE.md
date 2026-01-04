@@ -48,7 +48,7 @@
 ```
 
 ### 2. Optimiser les Images Locales
-Les images dans `/public` (img1.jpg, img2.jpg, etc.) sont très lourdes.
+Les images dans `/public` (img1.webp, img2.webp, etc.) sont très lourdes.
 - Utiliser un outil comme TinyPNG pour compresser
 - Convertir en WebP si possible
 - Cible : < 200 Ko par image

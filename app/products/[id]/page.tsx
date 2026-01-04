@@ -122,7 +122,7 @@ const mockProducts = {
     isActive: true,
     images: [
       'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=800',
-      '/jard1.jpg',
+      '/jard1.webp',
     ],
     attributes: {
       surface: 'Jusqu\'à 4000m²',
@@ -171,8 +171,8 @@ const generateProductDetails = (productId: string): typeof mockProducts['1'] => 
     '16': { name: 'GoPro Hero 12', creator: 'GoPro', category: 'photo', categoryLabel: 'Univers Tech', price: 449, image: 'https://images.unsplash.com/photo-1516035069371-29a1b244b32a?w=800' },
     '17': { name: 'Sony FX3 Cinema Camera', creator: 'Sony', category: 'photo', categoryLabel: 'Univers Tech', price: 3999, image: 'https://images.unsplash.com/photo-1606983340126-99ab4feaa64a?w=800' },
     '18': { name: 'Robot Tondeuse Automower 430X', creator: 'Husqvarna', category: 'garden', categoryLabel: 'Univers Jardin', price: 2499, image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=800' },
-    '19': { name: 'Tondeuse Robot Gardena', creator: 'Gardena', category: 'garden', categoryLabel: 'Univers Jardin', price: 899, image: '/jard2.jpg' },
-    '20': { name: 'Tronçonneuse STIHL MS 271', creator: 'STIHL', category: 'garden', categoryLabel: 'Univers Jardin', price: 349, image: '/jard3.jpg' },
+    '19': { name: 'Tondeuse Robot Gardena', creator: 'Gardena', category: 'garden', categoryLabel: 'Univers Jardin', price: 899, image: '/jard2.webp' },
+    '20': { name: 'Tronçonneuse STIHL MS 271', creator: 'STIHL', category: 'garden', categoryLabel: 'Univers Jardin', price: 349, image: '/jard3.webp' },
     '21': { name: 'Tondeuse Robot Worx Landroid', creator: 'Worx', category: 'garden', categoryLabel: 'Univers Jardin', price: 1299, image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=800' },
     '22': { name: 'Aspirateur Souffleur STIHL', creator: 'STIHL', category: 'garden', categoryLabel: 'Univers Jardin', price: 199, image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=800' },
     '23': { name: 'Taille-haie Électrique Bosch', creator: 'Bosch', category: 'garden', categoryLabel: 'Univers Jardin', price: 149, image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=800' },

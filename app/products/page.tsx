@@ -62,8 +62,8 @@ const mockProducts = [
   
   // Jardinage
   { id: '18', name: 'Robot Tondeuse Automower 430X', creator: 'Husqvarna', category: 'garden', type: 'mower', categoryLabel: 'Univers Jardin', image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=500', price: 2499 },
-  { id: '19', name: 'Tondeuse Robot Gardena', creator: 'Gardena', category: 'garden', type: 'mower', categoryLabel: 'Univers Jardin', image: '/jard2.jpg', price: 899 },
-  { id: '20', name: 'Tronçonneuse STIHL MS 271', creator: 'STIHL', category: 'garden', type: 'tools', categoryLabel: 'Univers Jardin', image: '/jard3.jpg', price: 349 },
+  { id: '19', name: 'Tondeuse Robot Gardena', creator: 'Gardena', category: 'garden', type: 'mower', categoryLabel: 'Univers Jardin', image: '/jard2.webp', price: 899 },
+  { id: '20', name: 'Tronçonneuse STIHL MS 271', creator: 'STIHL', category: 'garden', type: 'tools', categoryLabel: 'Univers Jardin', image: '/jard3.webp', price: 349 },
   { id: '21', name: 'Tondeuse Robot Worx Landroid', creator: 'Worx', category: 'garden', type: 'mower', categoryLabel: 'Univers Jardin', image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=500', price: 1299 },
   { id: '22', name: 'Aspirateur Souffleur STIHL', creator: 'STIHL', category: 'garden', type: 'tools', categoryLabel: 'Univers Jardin', image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=500', price: 199 },
   { id: '23', name: 'Taille-haie Électrique Bosch', creator: 'Bosch', category: 'garden', type: 'tools', categoryLabel: 'Univers Jardin', image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=500', price: 149 },
@@ -286,17 +286,17 @@ function ProductsPageContent() {
   const immersiveImages = useMemo(() => [
     { 
       id: 1, 
-      url: '/img1.jpg', 
+      url: '/img1.webp', 
       name: 'iPhone 15 Pro Max',
     },
     { 
       id: 2, 
-      url: '/img2.jpg', 
+      url: '/img2.webp', 
       name: 'MacBook Pro M3',
     },
     { 
       id: 3, 
-      url: '/img3.jpg', 
+      url: '/img3.webp', 
       name: 'PlayStation 5',
     },
   ], []);

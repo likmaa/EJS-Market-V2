@@ -472,7 +472,7 @@ async function main() {
       stock: 25,
       brand: 'Gardena',
       category: 'garden',
-      images: ['/jard2.jpg'],
+      images: ['/jard2.webp'],
       attributes: { area: '1000m²', installation: 'Facile', safety: 'Maximale' }
     },
     {
@@ -490,7 +490,7 @@ async function main() {
       stock: 40,
       brand: 'STIHL',
       category: 'garden',
-      images: ['/jard3.jpg'],
+      images: ['/jard3.webp'],
       attributes: { engine: '50.2cm³', barLength: '40cm', start: 'Easy2Start' }
     },
     {
