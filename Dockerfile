@@ -1,6 +1,5 @@
 # Stage 1: Dependencies
 FROM node:20-alpine AS deps
-# Install dependencies for Prisma and Node.js on Alpine
 RUN apk add --no-cache libc6-compat openssl
 WORKDIR /app
 
@@ -10,7 +9,6 @@ RUN npm ci --include=dev
 
 # Stage 2: Builder
 FROM node:20-alpine AS builder
-# Install openssl for prisma generate
 RUN apk add --no-cache openssl
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
@@ -26,7 +24,6 @@ RUN npm run build
 
 # Stage 3: Runner
 FROM node:20-alpine AS runner
-# Install openssl for runtime prisma commands
 RUN apk add --no-cache openssl
 WORKDIR /app
 
@@ -42,7 +39,9 @@ COPY --from=builder /app/public ./public
 RUN mkdir .next
 RUN chown nextjs:nodejs .next
 
-# IMPORTANT: Copy Prisma files for migrations/seeding in production
+# IMPORTANT: Copy node_modules and prisma for migrations/seeding
+# Note: This increases image size but allows running terminal scripts
+COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/package.json ./package.json
 
